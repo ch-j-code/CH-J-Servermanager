@@ -4,17 +4,21 @@ CH-J Server Manager is a desktop SSH and SFTP client for Linux server administra
 
 The project is currently in **alpha**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the current application architecture; the product name remains CH-J Server Manager.
 
+[Browse source code](https://www.sm.ch-j.eu/en/source/) · [Releases](https://www.sm.ch-j.eu/en/releases/) · [Documentation](https://www.sm.ch-j.eu/en/servermanager/)
+
+The application source is published on the CH-J website. This GitHub repository contains only the README.
+
 ## Download
 
-Select the latest available build for your platform from the official release catalog:
+Download the latest alpha build for your platform:
 
-| Platform | Architecture | Official download catalog |
+| Platform | Architecture | Download |
 | --- | --- | --- |
-| macOS | Apple Silicon (`arm64`) | [Select macOS package](https://www.sm.ch-j.eu/en/releases/) |
-| Windows | `x64` | [Select Windows package](https://www.sm.ch-j.eu/en/releases/) |
-| Ubuntu/Debian | `x64` | [Select Linux DEB package](https://www.sm.ch-j.eu/en/releases/) |
+| macOS | Apple Silicon (`arm64`) | [Download for macOS](https://www.sm.ch-j.eu/download.php?platform=mac&arch=arm64&channel=alpha&lang=en) |
+| Windows | `x64` | [Download for Windows](https://www.sm.ch-j.eu/download.php?platform=win&arch=x64&channel=alpha&lang=en) |
+| Ubuntu/Debian | `x64` | [Download for Ubuntu/Debian](https://www.sm.ch-j.eu/download.php?platform=ubuntu&arch=x64&channel=alpha&lang=en) |
 
-**Download procedure:** Open the release catalog, select the desired operating system and build, and follow the site's license and backup-guidance confirmation. A confirmation page may appear before the installer download starts. The application also requires license acceptance at first launch and after updates. If confirming on the website does not lead to the selected file, report it as a website download-flow issue; the catalog link is not a direct installer URL.
+**Download procedure:** Click Download to start downloading the selected installer immediately. The website requires no license or backup-guidance confirmation. License acceptance takes place in the installer or application before use; the complete license and guidance remain available on the [official website](https://www.sm.ch-j.eu/en/license/).
 
 Additional builds, checksums, signatures and release channels are available in the [official release catalog](https://www.sm.ch-j.eu/en/releases/). See also the [English documentation](https://www.sm.ch-j.eu/en/servermanager/), [Czech website](https://www.sm.ch-j.cz/cs/) and [German website](https://www.sm.ch-j.de/de/).
 
@@ -160,7 +164,7 @@ The long-term update trust anchor is the primary OpenPGP fingerprint:
 0D92 778A D8EC F85C 80E3  9248 48F2 433A D9CD F453
 ```
 
-To verify a download manually, obtain the [CH-J public key from the official source browser](https://www.sm.ch-j.eu/en/source/), check that its primary fingerprint matches the value above, and import it with `gpg --import ch-j-signing-public.asc`. Verify the downloaded manifest with `gpg --verify SHA512SUMS.asc SHA512SUMS`, then check the files with `shasum -a 512 -c SHA512SUMS` (macOS) or `sha512sum -c SHA512SUMS` (Linux). Windows PowerShell provides `Get-FileHash -Algorithm SHA512 <file>`. Each installer also has a detached `.asc` signature that can be checked with `gpg --verify <file>.asc <file>`.
+To verify a download manually, obtain the [CH-J public key](https://www.sm.ch-j.eu/ch-j-signing-public.asc), check that its primary fingerprint matches the value above, and import it with `gpg --import ch-j-signing-public.asc`. Verify the downloaded manifest with `gpg --verify SHA512SUMS.asc SHA512SUMS`, then check the files with `shasum -a 512 -c SHA512SUMS` (macOS) or `sha512sum -c SHA512SUMS` (Linux). Windows PowerShell provides `Get-FileHash -Algorithm SHA512 <file>`. Each installer also has a detached `.asc` signature that can be checked with `gpg --verify <file>.asc <file>`.
 
 Valid signing subkeys may be rotated as long as they remain cryptographically bound to this primary key and are valid for signing. Revoked, expired, unknown, malformed, or otherwise invalid keys and signatures block installation.
 
@@ -235,6 +239,6 @@ This edition of CH-J Server Manager is expressly distributed under the **CH-J Pr
 
 The license integration described here applies to newly built packages. Existing published downloads retain their original contents and licensing information.
 
-Before installation, the website displays the complete operational guidance in the selected language and requires an explicit Continue step before downloading an application package. Interactive Windows NSIS installation displays the guidance before the complete license and requires license acceptance. macOS DMG displays guidance before the license in the system prompt. Application ZIP, Debian/Ubuntu and silent installation have no reliable pre-installation dialog; the application displays the guidance before license acceptance at first launch. Every platform requires per-user acceptance before using a new or updated build, including updates with the same version number. Declining exits the application. The acceptance record is local; no activation or reporting is required. See the [license and installation information](https://www.sm.ch-j.eu/en/license/).
+Website downloads start immediately, without a confirmation page. The complete operational guidance remains available on the [official license and guidance page](https://www.sm.ch-j.eu/en/license/). Interactive Windows NSIS installation displays the guidance before the complete license and requires license acceptance. macOS DMG displays guidance before the license in the system prompt. Application ZIP, Debian/Ubuntu and silent installation have no reliable pre-installation dialog; the application displays the guidance before license acceptance at first launch. Every platform requires per-user acceptance before using a new or updated build, including updates with the same version number. Declining exits the application. The acceptance record is local; no activation or reporting is required. See the [license and installation information](https://www.sm.ch-j.eu/en/license/).
 
-The application bundles [documentation](https://www.sm.ch-j.eu/en/servermanager/) and operational guidance in three languages, available from the [official license and guidance page](https://www.sm.ch-j.eu/en/license/). Displaying these recommendations is mandatory before proceeding; following them remains optional. They are informational and non-binding, are not part of the license and do not require separate acceptance. The application displays them again before license acceptance after every update, or if the bundled guidance changes. They are available in the application under **Settings → Licenses and documentation** and on the [official license page](https://www.sm.ch-j.eu/en/license/).
+The application bundles [documentation](https://www.sm.ch-j.eu/en/servermanager/) and operational guidance in three languages, available from the [official license and guidance page](https://www.sm.ch-j.eu/en/license/). The application displays these recommendations before license acceptance; following them remains optional. They are informational and non-binding, are not part of the license and do not require separate acceptance. The application displays them again before license acceptance after every update, or if the bundled guidance changes. They are available in the application under **Settings → Licenses and documentation** and on the [official license page](https://www.sm.ch-j.eu/en/license/).
