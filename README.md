@@ -6,13 +6,15 @@ The project is currently in **alpha**. It is suitable for testing, but some plan
 
 ## Download
 
-Download the latest alpha build for your platform:
+Select the latest available build for your platform from the official release catalog:
 
-| Platform | Architecture | Package |
+| Platform | Architecture | Official download catalog |
 | --- | --- | --- |
-| macOS | Apple Silicon (`arm64`) | [Download for macOS](https://www.sm.ch-j.de/download.php?channel=alpha&platform=mac&arch=arm64) |
-| Windows | `x64` | [Download for Windows](https://www.sm.ch-j.de/download.php?channel=alpha&platform=win&arch=x64) |
-| Ubuntu/Debian | `x64` | [Download for Ubuntu](https://www.sm.ch-j.de/download.php?channel=alpha&platform=ubuntu&arch=x64) |
+| macOS | Apple Silicon (`arm64`) | [Select macOS package](https://www.sm.ch-j.eu/en/releases/) |
+| Windows | `x64` | [Select Windows package](https://www.sm.ch-j.eu/en/releases/) |
+| Ubuntu/Debian | `x64` | [Select Linux DEB package](https://www.sm.ch-j.eu/en/releases/) |
+
+**Download procedure:** Open the release catalog, select the desired operating system and build, and follow the site's license and backup-guidance confirmation. A confirmation page may appear before the installer download starts. The application also requires license acceptance at first launch and after updates. If confirming on the website does not lead to the selected file, report it as a website download-flow issue; the catalog link is not a direct installer URL.
 
 Additional builds, checksums, signatures and release channels are available in the [official release catalog](https://www.sm.ch-j.eu/en/releases/). See also the [English documentation](https://www.sm.ch-j.eu/en/servermanager/), [Czech website](https://www.sm.ch-j.cz/cs/) and [German website](https://www.sm.ch-j.de/de/).
 
