@@ -14,7 +14,7 @@ Download the latest alpha build for your platform:
 | Windows | `x64` | [Download for Windows](https://www.sm.ch-j.de/download.php?channel=alpha&platform=win&arch=x64) |
 | Ubuntu/Debian | `x64` | [Download for Ubuntu](https://www.sm.ch-j.de/download.php?channel=alpha&platform=ubuntu&arch=x64) |
 
-Additional builds and release channels are available on the [CH-J Server Manager website](https://www.sm.ch-j.de/de/servermanager/).
+Additional builds, checksums, signatures and release channels are available in the [official release catalog](https://www.sm.ch-j.eu/en/releases/). See also the [English documentation](https://www.sm.ch-j.eu/en/servermanager/), [Czech website](https://www.sm.ch-j.cz/cs/) and [German website](https://www.sm.ch-j.de/de/).
 
 Alpha distribution notes:
 
@@ -25,13 +25,13 @@ Alpha distribution notes:
 
 ## Latest alpha changes
 
-This release adds the integrated Server Diagnostics workspace (CS/DE/EN), reliable Monaco remote-file saves with recovery and conflict detection, and separate SSH RTT and ICMP measurements. Hash & Checksum, plugin windows and existing server profiles remain supported. See [remote editor and latency details](docs/remote-editor-latency.md) and [diagnostics capabilities and limits](docs/server-diagnostics.md).
+This release adds the integrated Server Diagnostics workspace (CS/DE/EN), reliable Monaco remote-file saves with recovery and conflict detection, and separate SSH RTT and ICMP measurements. Hash & Checksum, plugin windows and existing server profiles remain supported. See the [SSH and SFTP documentation](https://www.sm.ch-j.eu/en/servermanager/) and [Server Diagnostics documentation](https://www.sm.ch-j.eu/en/servermanager/). Detailed release source files are available in the [official source browser](https://www.sm.ch-j.eu/en/source/), not in this GitHub repository.
 
-All platform packages use build ID `core-20261009T165008Z-d06eb073`. Detached `.asc` signatures are produced with the CH-J signing subkey on a YubiKey; [SHA512SUMS](https://www.sm.ch-j.de/files/apps/builds/core-20261009T165008Z-d06eb073/SHA512SUMS) and its [OpenPGP signature](https://www.sm.ch-j.de/files/apps/builds/core-20261009T165008Z-d06eb073/SHA512SUMS.asc) cover all four artifacts.
+Build IDs, SHA-512 hashes and signatures are listed with the corresponding packages in the [official release catalog](https://www.sm.ch-j.eu/en/releases/). Release artifacts use detached OpenPGP signatures made with the CH-J signing subkey on a YubiKey. Always verify values against the specific release you downloaded.
 
 ## Vault security and platform fixes
 
-Optional Touch ID, Windows Hello (including PIN) and Ubuntu fingerprint unlock integrate with the existing encrypted Vault, with master-password fallback, CS/DE/EN settings, inactivity locking and optional focus locking. Windows and Linux provide convenience unlock; macOS uses biometric-gated Keychain access. **Locking disconnects SSH sessions and closes plugins.** Native hardware authentication still needs interactive verification. See [setup, dependencies, platform security differences and verification](docs/biometric-unlock.md).
+Optional Touch ID, Windows Hello (including PIN) and Ubuntu fingerprint unlock integrate with the existing encrypted Vault, with master-password fallback, CS/DE/EN settings, inactivity locking and optional focus locking. Windows and Linux provide convenience unlock; macOS uses biometric-gated Keychain access. **Locking disconnects SSH sessions and closes plugins.** Native hardware authentication still needs interactive verification. See the [official security and biometric unlock documentation](https://www.sm.ch-j.eu/en/servermanager/).
 
 On macOS, `EHOSTUNREACH` for local SSH servers may require allowing **CH-J Server Manager** under **System Settings → Privacy & Security → Local Network**, then restarting the app. This build declares the usage reason and explains the error. Ubuntu packages include standard icon sizes and a matching desktop/window identity.
 
@@ -61,7 +61,7 @@ HTTP/3 requires a separately available curl build with HTTP3/QUIC and `--http3-o
 
 History stays in the application's local data directory. JSON/CSV/TXT reports omit bodies, cookies, authentication metadata and URL queries. Import JSON, reopen or compare saved runs from History. No new npm dependencies are required; OS ping/traceroute tools and optional HTTP3-enabled curl provide the platform-specific capabilities.
 
-See [implementation, IPC, limits and verification](docs/server-diagnostics.md). Run `npm test` for deterministic network tests and `npm run test:diagnostics:ui` for the Electron UI smoke test (requires a graphical desktop).
+See the [Server Diagnostics documentation](https://www.sm.ch-j.eu/en/servermanager/). Run `npm test` for deterministic network tests and `npm run test:diagnostics:ui` for the Electron UI smoke test (requires a graphical desktop).
 
 ## Hash & Checksum
 
@@ -158,7 +158,7 @@ The long-term update trust anchor is the primary OpenPGP fingerprint:
 0D92 778A D8EC F85C 80E3  9248 48F2 433A D9CD F453
 ```
 
-To verify a download manually, obtain the bundled [public key](ch-j-signing-public.asc), check that its primary fingerprint matches the value above, and import it with `gpg --import ch-j-signing-public.asc`. Verify the downloaded manifest with `gpg --verify SHA512SUMS.asc SHA512SUMS`, then check the files with `shasum -a 512 -c SHA512SUMS` (macOS) or `sha512sum -c SHA512SUMS` (Linux). Windows PowerShell provides `Get-FileHash -Algorithm SHA512 <file>`. Each installer also has a detached `.asc` signature that can be checked with `gpg --verify <file>.asc <file>`.
+To verify a download manually, obtain the [CH-J public key from the official source browser](https://www.sm.ch-j.eu/en/source/), check that its primary fingerprint matches the value above, and import it with `gpg --import ch-j-signing-public.asc`. Verify the downloaded manifest with `gpg --verify SHA512SUMS.asc SHA512SUMS`, then check the files with `shasum -a 512 -c SHA512SUMS` (macOS) or `sha512sum -c SHA512SUMS` (Linux). Windows PowerShell provides `Get-FileHash -Algorithm SHA512 <file>`. Each installer also has a detached `.asc` signature that can be checked with `gpg --verify <file>.asc <file>`.
 
 Valid signing subkeys may be rotated as long as they remain cryptographically bound to this primary key and are valid for signing. Revoked, expired, unknown, malformed, or otherwise invalid keys and signatures block installation.
 
@@ -188,7 +188,7 @@ This list is not exhaustive. Behavior and data formats may still change during t
 
 ## Standalone application source
 
-This `app/` directory is the complete, self-contained desktop application source tree. It can be copied into an otherwise empty working directory and used for dependency installation, testing, development startup, and supported platform builds without any sibling source projects.
+This GitHub repository is a public project-information entry point; it does **not** contain the application source tree. Official source archives and the per-release source file browser are available exclusively on the [CH-J Server Manager website](https://www.sm.ch-j.eu/en/source/). Consult the applicable license before downloading, building or using the source. The downloadable source archive contains the application files for supported build workflows.
 
 The application communicates with an update service through its public HTTPS contract and supports independently distributed plugin packages through Plugin API 1.2. External services, plugin sources, and release tooling are not runtime, test, or build dependencies. Bundled first-party plugins in `src/main/firstPartyPlugins/` and the internal plugin framework in `src/main/plugins/` are included in this application tree.
 
@@ -203,7 +203,7 @@ Requirements:
 Use an authorised copy of the supplied application sources and a separate `node_modules` installation on each operating system:
 
 ```bash
-cd /path/to/supplied/app
+cd /path/to/extracted/application-source
 npm ci
 npm test
 npm start
@@ -223,16 +223,16 @@ The configured outputs are a macOS DMG (`arm64`), a Windows NSIS installer (`x64
 
 Remote editor saves, sudo authorization, recovery, latency definitions and the
 remaining external File Manager UI integration are documented in
-[Remote editor and latency monitoring](docs/remote-editor-latency.md).
+[SSH and SFTP documentation](https://www.sm.ch-j.eu/en/servermanager/).
 
 [#ssh](https://github.com/topics/ssh) · [#sftp](https://github.com/topics/sftp) · [#server-management](https://github.com/topics/server-management) · [#hash-calculator](https://github.com/topics/hash-calculator) · [#checksum](https://github.com/topics/checksum) · [#file-integrity](https://github.com/topics/file-integrity) · [#sha256](https://github.com/topics/sha256) · [#sha512](https://github.com/topics/sha512) · [#sha3](https://github.com/topics/sha3) · [#blake3](https://github.com/topics/blake3) · [#xxhash](https://github.com/topics/xxhash) · [#electron](https://github.com/topics/electron) · [#linux](https://github.com/topics/linux) · [#macos](https://github.com/topics/macos) · [#windows](https://github.com/topics/windows)
 
 ## License
 
-This edition of CH-J Server Manager is expressly distributed under the **CH-J Proprietary Software License, version 1.14** (October 11, 2026). See the [complete license](LICENSE). Commercial and non-commercial use are free of license fees indefinitely under its terms. Third-party materials retain their separate licenses and notices; this application license does not replace them.
+This edition of CH-J Server Manager is expressly distributed under the **CH-J Proprietary Software License, version 1.14** (October 11, 2026). See the [complete official license](https://www.sm.ch-j.eu/en/license/). Commercial and non-commercial use are free of license fees indefinitely under its terms. Third-party materials retain their separate licenses and notices; this application license does not replace them.
 
 The license integration described here applies to newly built packages. Existing published downloads retain their original contents and licensing information.
 
-Before installation, the website displays the complete operational guidance in the selected language and requires an explicit Continue step before downloading an application package. Interactive Windows NSIS installation displays the guidance before the complete license and requires license acceptance. macOS DMG displays guidance before the license in the system prompt. Application ZIP, Debian/Ubuntu and silent installation have no reliable pre-installation dialog; the application displays the guidance before license acceptance at first launch. Every platform requires per-user acceptance before using a new or updated build, including updates with the same version number. Declining exits the application. The acceptance record is local; no activation or reporting is required. See [license acceptance and packaging](docs/license-acceptance.md).
+Before installation, the website displays the complete operational guidance in the selected language and requires an explicit Continue step before downloading an application package. Interactive Windows NSIS installation displays the guidance before the complete license and requires license acceptance. macOS DMG displays guidance before the license in the system prompt. Application ZIP, Debian/Ubuntu and silent installation have no reliable pre-installation dialog; the application displays the guidance before license acceptance at first launch. Every platform requires per-user acceptance before using a new or updated build, including updates with the same version number. Declining exits the application. The acceptance record is local; no activation or reporting is required. See the [license and installation information](https://www.sm.ch-j.eu/en/license/).
 
-The application bundles [documentation](docs/README.md), including [Provozní bezpečnost a zálohování (česky)](docs/provozni-bezpecnost-a-zalohovani.md), [Operational Safety and Backup Guidance (English)](docs/operational-safety-and-backup-guidance.md) and [Betriebssicherheit und Datensicherung (Deutsch)](docs/betriebssicherheit-und-datensicherung.md). Displaying these recommendations is mandatory before proceeding; following them remains optional. They are informational and non-binding, are not part of the license and do not require separate acceptance. The application displays them again before license acceptance after every update, or if the bundled guidance changes. They are available in the application under **Settings → Licenses and documentation** and on the [website license page]([https://www.sm.ch-j.cz/license.php#full-license).
+The application bundles [documentation](https://www.sm.ch-j.eu/en/servermanager/) and operational guidance in three languages, available from the [official license and guidance page](https://www.sm.ch-j.eu/en/license/). Displaying these recommendations is mandatory before proceeding; following them remains optional. They are informational and non-binding, are not part of the license and do not require separate acceptance. The application displays them again before license acceptance after every update, or if the bundled guidance changes. They are available in the application under **Settings → Licenses and documentation** and on the [official license page](https://www.sm.ch-j.eu/en/license/).
