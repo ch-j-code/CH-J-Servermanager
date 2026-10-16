@@ -2,6 +2,16 @@
 
 CH-J Server Manager is a desktop SSH and SFTP client for Linux server administration and a local file hash calculator and checksum verification tool for Windows, macOS, and Linux. It combines server profiles, an interactive terminal, file management, monitoring, log inspection, user administration, NGINX management, and 49 hashing algorithms in one Electron application.
 
+## Download alpha
+
+| Platform | Architecture | Package |
+| --- | --- | --- |
+| macOS | Apple Silicon (`arm64`) | [Download DMG for macOS](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=mac&arch=arm64&lang=en) |
+| Windows 11 | `x64` | [Download for Windows](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=win&arch=x64&lang=en) |
+| Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=ubuntu&arch=x64&lang=en) |
+
+**Development alpha:** back up important data before installation or updates.
+
 [Browse source code](https://www.sm.ch-j.eu/en/source/) · [Releases](https://www.sm.ch-j.eu/en/releases/) · [Documentation](https://www.sm.ch-j.eu/en/documentation/)
 
 ## Development status
@@ -152,13 +162,7 @@ Hashing is local-only: the plugin has no network, SSH, or SFTP hashing capabilit
 
 ## Download and installation
 
-Use the official [release catalog](https://www.sm.ch-j.eu/en/releases/) or the current alpha download links below:
-
-| Platform | Architecture | Package |
-| --- | --- | --- |
-| macOS | Apple Silicon (`arm64`) | [Download DMG for macOS](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=mac&arch=arm64&lang=en) |
-| Windows 11 | `x64` | [Download for Windows](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=win&arch=x64&lang=en) |
-| Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=ubuntu&arch=x64&lang=en) |
+Use the [download links at the top of this README](#download-alpha) or the official [release catalog](https://www.sm.ch-j.eu/en/releases/).
 
 The [CH-J Server Manager release catalog](https://www.sm.ch-j.eu/en/releases/) lists the packages and channels that are actually available.
 
