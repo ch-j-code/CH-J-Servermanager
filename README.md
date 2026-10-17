@@ -1,6 +1,6 @@
 # CH-J Server Manager
 
-CH-J Server Manager is a desktop SSH and SFTP client for Linux server administration and a local file hash calculator and checksum verification tool for Windows, macOS, and Linux. It combines server profiles, an interactive terminal, file management, monitoring, log inspection, user administration, NGINX management, and 49 hashing algorithms in one Electron application.
+CH-J Server Manager is a desktop SSH and SFTP client for Linux server administration, with Windows server support in selected tools, and a local file hash calculator and checksum verification tool for Windows, macOS, and Linux. It combines server profiles, an interactive terminal, file management, monitoring, log inspection, user administration, NGINX management, and 49 hashing algorithms in one Electron application.
 
 ## Download alpha
 
@@ -18,11 +18,11 @@ CH-J Server Manager is a desktop SSH and SFTP client for Linux server administra
 
 The project is currently in **alpha**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the current application architecture; the product name remains CH-J Server Manager.
 
-The public desktop catalog checked on **October 16, 2026** lists version `0.0.1`, build `core-20261014T184258Z-3fbed0b93fdf`. Check the [release catalog](https://www.sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
+The public desktop catalog checked on **October 17, 2026** lists version `0.0.1`, build `core-20261017T201717Z-057348c4a70f`. Check the [release catalog](https://www.sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
 
-The current alpha includes the Server Diagnostics workspace (CS/DE/EN), Monaco remote text editing with Core conflict checks and recovery safeguards, and separate SSH response-time and ICMP measurements. End-to-end sudo prompts and recovery controls in the File Manager UI remain incomplete. See [remote editor and latency details](https://www.sm.ch-j.eu/en/documentation/ssh-and-sftp/) and [diagnostics capabilities and limits](https://www.sm.ch-j.eu/en/documentation/server-diagnostics/).
+This build adds separate Linux and Windows System Monitor collectors with memory and virtual memory management, and root SSH access management in Users. The current alpha includes the Server Diagnostics workspace (CS/DE/EN), Monaco remote text editing with Core conflict checks and recovery safeguards, and separate SSH response-time and ICMP measurements. End-to-end sudo prompts and recovery controls in the File Manager UI remain incomplete. See [remote editor and latency details](https://www.sm.ch-j.eu/en/documentation/ssh-and-sftp/) and [diagnostics capabilities and limits](https://www.sm.ch-j.eu/en/documentation/server-diagnostics/).
 
-The current desktop installers have detached OpenPGP signatures. The release [SHA512SUMS](https://www.sm.ch-j.eu/files/apps/builds/core-20261014T184258Z-3fbed0b93fdf/SHA512SUMS) and its [signature](https://www.sm.ch-j.eu/files/apps/builds/core-20261014T184258Z-3fbed0b93fdf/SHA512SUMS.asc) cover the DMG, EXE and DEB. Source archives and their release metadata are available in the source catalog.
+The current desktop installers have detached OpenPGP signatures. The release [SHA512SUMS](https://www.sm.ch-j.eu/files/apps/builds/core-20261017T201717Z-057348c4a70f/SHA512SUMS) and its [signature](https://www.sm.ch-j.eu/files/apps/builds/core-20261017T201717Z-057348c4a70f/SHA512SUMS.asc) cover the DMG, EXE and DEB. Source archives and their release metadata are available in the source catalog.
 
 ### Current limitations
 
@@ -56,12 +56,45 @@ The current catalog has no Intel Mac installer. Compatibility with other Linux d
 - file browsing, editing, upload, download, deletion, and ZIP/TAR/TAR.GZ export through a restricted SFTP interface;
 - Czech, German, and English user interfaces;
 - bundled first-party tools for System Monitor, Key Generator, Log Viewer, Users, File Manager, and NGINX Manager, with separately distributed plugin updates;
+- System Monitor and Users for remote Linux servers and Windows servers reached through Windows OpenSSH (see the platform notes below);
 - integrated Server Diagnostics: ICMP, traceroute, DNS, HTTP/1.1/2/3 capability tests, server timings, compression, TLS, TCP ports, local history and JSON/CSV/TXT exports;
 - a bundled local Hash & Checksum tool in the sidebar for calculation, verification, comparison, and checksum manifests;
 - sandboxed plugin windows with capability-based access to Core services;
 - dark title bars on Windows and Linux, plugin windows kept above the main window, and a bottom bar for collapsed plugins;
 - alpha, beta, and stable update-channel selection; the current public packages are alpha;
 - application updates protected by size checks, SHA-512, and mandatory detached OpenPGP signatures.
+
+### System Monitor and virtual memory
+
+System Monitor detects the remote operating system from system data (`uname`, or the Windows registry / `Win32_OperatingSystem`) and uses a separate Linux or Windows collector. On Windows, it works with `cmd.exe` and PowerShell as the default SSH shell. It does not show a load average on Windows, because Windows has none, and shows the processor queue length instead. When a network driver reports no byte counters, System Monitor shows packet counts.
+
+The **Memory and virtual memory** section shows a RAM breakdown in which no value is counted twice. It also shows RAM and swap history and lists every swap area or page file with its type, path, priority, persistence, and swap-in/swap-out activity. Reading metrics never requires sudo.
+
+- **Linux swap files (root or sudo):** you can create, activate, deactivate, resize, reprioritize, persist, and delete swap files in `/swapfile*`, `/swap/<name>`, or `/var/lib/swap/<name>`, sized from 64 MiB to 64 GiB.
+  - Supported file systems are ext2/3/4, XFS, Btrfs, and F2FS.
+  - A swap area is not deactivated when its contents would not fit into the available memory, which keeps a reserve, plus the free space in other swap areas.
+  - `/etc/fstab` is backed up before every change.
+  - Swap partitions can only be deactivated or reprioritized. zram and zswap are read-only.
+- **Windows page files (elevated administrator SSH session, UAC is never bypassed):** you can switch automatic management, set custom or system-managed sizes, and add or remove page files.
+  - Changes take effect only after a restart. The application shows "restart pending" and **never restarts Windows**.
+
+The terminal status bar measures **ICMP ping** (local system `ping`, with median, packet loss, and a reason such as timeout or blocked) and **SSH response time** (round trips over the existing SSH transport) separately. A blocked ICMP does not mark a server as offline.
+
+### Users: root SSH access
+
+Users protects the root account: you cannot delete it or change its UID/GID, groups, shell, or home directory. You can manage its SSH keys and SSH access through a root session or sudo. This includes `PermitRootLogin` (`no`, `prohibit-password`, which is recommended, `forced-commands-only`, `yes`, or inherited server settings). Enabling password login for root requires an extra typed confirmation.
+
+### Verified remote server systems
+
+The following systems were verified on isolated test machines in October 2026. Results from other versions are not verified:
+
+| Tool | Verified remote systems |
+| --- | --- |
+| System Monitor metrics, latency and swap files | Test VMs: Debian 13, Ubuntu 24.04 and 26.04, Rocky Linux 10.2 (XFS), Alpine Linux 3.24, Proxmox VE 9.2. Disposable containers: Debian 13, Ubuntu 24.04, Rocky Linux 9 (ext4, XFS, Btrfs) |
+| System Monitor metrics, latency and page file settings | Windows 11 Pro and Windows Server 2025 Core, with no restart performed |
+| Users, including root SSH access | Test VMs and containers listed above |
+
+On Proxmox VE, root's `authorized_keys` is a link into the cluster file system, so Users shows it but does not change it. On Alpine Linux, a locked root account cannot log in with SSH, even with a key.
 
 ### Server Diagnostics
 
@@ -154,7 +187,7 @@ MD5 and SHA-1 are included only for legacy compatibility. xxHash, MurmurHash3, C
 
 #### Plugin API
 
-The current Plugin API is `1.2.0`. Plugins requiring `^1.0.0` or `^1.1.0` remain compatible. Hash & Checksum is a bundled first-party plugin and uses only the narrow `local.hash` permission.
+The Plugin API in the current source tree is `1.4.0`. Plugins requiring `^1.0.0` through `^1.3.0` remain compatible. Version 1.4 adds the `system.memory.manage` permission for controlled swap and page-file changes. Hash & Checksum is a bundled first-party plugin and uses only the narrow `local.hash` permission.
 
 Core owns every native file, directory, manifest, and export dialog. It gives the sandboxed plugin opaque, plugin-owned selection tokens rather than raw paths, rejects tokens belonging to another plugin, and keeps filesystem access out of the renderer. Hash jobs run in worker threads, stream bounded chunks, support progress and cancellation, and verify stable file identity before returning results. Directory enumeration skips symlinks. Manifest verification rejects symlink escapes, traversal, absolute paths, drive paths, and UNC paths.
 
@@ -225,7 +258,7 @@ The application bundles [documentation](https://www.sm.ch-j.eu/en/documentation/
 
 ## Documentation and source catalog
 
-[Browse the application source](https://www.sm.ch-j.eu/en/source/) on the CH-J website, with directories, file views, line links and a complete source archive. Source availability does not grant rights beyond the [CH-J Proprietary Software License 1.14](https://www.sm.ch-j.eu/en/license/). This GitHub repository contains only this README; the source and release downloads are hosted on the CH-J website.
+[Browse the application source](https://www.sm.ch-j.eu/en/source/) on the CH-J website, with directories, file views, line links and a complete source archive. Source availability does not grant rights beyond the [CH-J Proprietary Software License 1.14](https://www.sm.ch-j.eu/en/license/). The [GitHub repository](https://github.com/ch-j-code/CH-J-Servermanager) contains only this README; the source and release downloads are hosted on the CH-J website.
 
 - [Getting started and documentation](https://www.sm.ch-j.eu/en/documentation/)
 - [SSH, SFTP and remote editing](https://www.sm.ch-j.eu/en/documentation/ssh-and-sftp/)
@@ -269,7 +302,7 @@ SM Mobile's tablet layout is implemented, while physical iPad validation remains
 
 The desktop source archive contains a complete, self-contained application source tree. It can be copied into an otherwise empty working directory and used for dependency installation, testing, development startup, and supported platform builds without any sibling source projects.
 
-The application communicates with an update service through its public HTTPS contract and supports independently distributed plugin packages through Plugin API 1.2. External services, plugin sources, and release tooling are not runtime, test, or build dependencies. Bundled first-party plugins in `src/main/firstPartyPlugins/` and the internal plugin framework in `src/main/plugins/` are included in this application tree.
+The application communicates with an update service through its public HTTPS contract and supports independently distributed plugin packages through Plugin API 1.4. External services, plugin sources, and release tooling are not runtime, test, or build dependencies. Bundled first-party plugins in `src/main/firstPartyPlugins/` and the internal plugin framework in `src/main/plugins/` are included in this application tree.
 
 ### Development from the official sources
 
