@@ -6,30 +6,29 @@ CH-J Server Manager is a desktop SSH and SFTP client for Linux server administra
 
 | Platform | Architecture | Package |
 | --- | --- | --- |
-| macOS | Apple Silicon (`arm64`) | [Download DMG for macOS](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=mac&arch=arm64&lang=en) |
-| Windows 11 | `x64` | [Download for Windows](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=win&arch=x64&lang=en) |
-| Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://www.sm.ch-j.eu/download.php?channel=alpha&platform=ubuntu&arch=x64&lang=en) |
+| macOS | Apple Silicon (`arm64`) | [Download DMG for macOS](https://sm.ch-j.eu/download.php?channel=alpha&platform=mac&arch=arm64&lang=en) |
+| Windows 11 | `x64` | [Download for Windows](https://sm.ch-j.eu/download.php?channel=alpha&platform=win&arch=x64&lang=en) |
+| Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://sm.ch-j.eu/download.php?channel=alpha&platform=ubuntu&arch=x64&lang=en) |
 
 **Development alpha:** back up important data before installation or updates.
 
-[Browse source code](https://www.sm.ch-j.eu/en/source/) · [Releases](https://www.sm.ch-j.eu/en/releases/) · [Documentation](https://www.sm.ch-j.eu/en/documentation/)
+[Browse source code](https://sm.ch-j.eu/en/source/) · [Releases](https://sm.ch-j.eu/en/releases/) · [Documentation](https://sm.ch-j.eu/en/documentation/)
 
 ## Development status
 
 The project is currently in **alpha**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the current application architecture; the product name remains CH-J Server Manager.
 
-The public desktop catalog checked on **October 17, 2026** lists version `0.0.1`, build `core-20261017T201717Z-057348c4a70f`. Check the [release catalog](https://www.sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
+The public desktop catalog checked on **October 22, 2026** lists version `0.0.1`, build `core-20261022T201910Z-8e2810f53c90`, as the default download and the default source code. Check the [release catalog](https://sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
 
-This build adds separate Linux and Windows System Monitor collectors with memory and virtual memory management, and root SSH access management in Users. The current alpha includes the Server Diagnostics workspace (CS/DE/EN), Monaco remote text editing with Core conflict checks and recovery safeguards, and separate SSH response-time and ICMP measurements. End-to-end sudo prompts and recovery controls in the File Manager UI remain incomplete. See [remote editor and latency details](https://www.sm.ch-j.eu/en/documentation/ssh-and-sftp/) and [diagnostics capabilities and limits](https://www.sm.ch-j.eu/en/documentation/server-diagnostics/).
+This build adds the Disk Manager for Linux servers, a resizable left sidebar with full, compact, two-column and hidden modes and icons, legacy DSA keys inside the packaged app and a password generator in Key Generator. It also contains privileged file operations through the shared sudo executor and resumable transfer queues. Earlier builds added separate Linux and Windows System Monitor collectors with memory and virtual memory management, root SSH access management in Users, the Server Diagnostics workspace (CS/DE/EN), Monaco remote text editing with Core conflict checks and recovery safeguards, and separate SSH response-time and ICMP measurements. See [remote editor and latency details](https://sm.ch-j.eu/en/documentation/ssh-and-sftp/) and [diagnostics capabilities and limits](https://sm.ch-j.eu/en/documentation/server-diagnostics/).
 
-The current desktop installers have detached OpenPGP signatures. The release [SHA512SUMS](https://www.sm.ch-j.eu/files/apps/builds/core-20261017T201717Z-057348c4a70f/SHA512SUMS) and its [signature](https://www.sm.ch-j.eu/files/apps/builds/core-20261017T201717Z-057348c4a70f/SHA512SUMS.asc) cover the DMG, EXE and DEB. Source archives and their release metadata are available in the source catalog.
+The current desktop installers have detached OpenPGP signatures. The release [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261022T201910Z-8e2810f53c90/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261022T201910Z-8e2810f53c90/SHA512SUMS.asc) cover the DMG, EXE and DEB. Source archives and their release metadata are available in the source catalog.
 
 ### Current limitations
 
 The following features are planned but not yet available:
 
 - migration of data from older application versions;
-- resumable SFTP transfer queues and fully integrated sudo-assisted editor saves;
 - remote archive extraction;
 - SSH jump hosts and port forwarding;
 - Safe Mode and additional tools.
@@ -55,7 +54,9 @@ The current catalog has no Intel Mac installer. Compatibility with other Linux d
 - multiple SSH sessions and an interactive terminal;
 - file browsing, editing, upload, download, deletion, and ZIP/TAR/TAR.GZ export through a restricted SFTP interface;
 - Czech, German, and English user interfaces;
-- bundled first-party tools for System Monitor, Key Generator, Log Viewer, Users, File Manager, and NGINX Manager, with separately distributed plugin updates;
+- Key Generator: SSH keys (Ed25519, RSA, ECDSA and explicitly confirmed legacy DSA/SSH1 RSA) and a password generator (4–70 characters, A–Z, a–z, 1–9 and `-@)¨§'=+`, optional dash after every four characters), copied through the main process clipboard;
+- bundled first-party tools for System Monitor, Key Generator, Log Viewer, Users, File Manager, NGINX Manager, and Disk Manager, with separately distributed plugin updates;
+- Disk Manager (`chj.disks`, Linux servers only): disk map, partitions, file systems, LVM and LUKS layers, automatic expansion after a disk was enlarged, and a reviewed queue of changes that runs as a server-side job (see `docs/disks-plugin.md` for supported operations and limits);
 - System Monitor and Users for remote Linux servers and Windows servers reached through Windows OpenSSH (see the platform notes below);
 - integrated Server Diagnostics: ICMP, traceroute, DNS, HTTP/1.1/2/3 capability tests, server timings, compression, TLS, TCP ports, local history and JSON/CSV/TXT exports;
 - a bundled local Hash & Checksum tool in the sidebar for calculation, verification, comparison, and checksum manifests;
@@ -86,12 +87,26 @@ Users protects the root account: you cannot delete it or change its UID/GID, gro
 
 ### Verified remote server systems
 
-The following systems were verified on isolated test machines in October 2026. Results from other versions are not verified:
+The following server operating systems were used for tests on isolated test machines in October 2026. Results from other versions are not verified:
+
+| Family | Tested versions |
+| --- | --- |
+| Ubuntu | 20.04.6 LTS, 22.04.5 LTS, 24.04.5 LTS, 25.04, 26.04.1 LTS |
+| Debian | 12 (bookworm), 13 (trixie) |
+| Rocky Linux | 10.2 (Red Quartz); Rocky Linux 9 in disposable containers |
+| Alpine Linux | 3.24.2 |
+| Kali Linux | Rolling 2026.1 (cloud image 2026.2) |
+| Proxmox VE | 9.2 (Debian 13 based) |
+| Windows | Windows 11 Pro, Windows 11 Enterprise Evaluation 26H2 |
+| Windows Server | Windows Server 2022 Standard Evaluation 21H2 (Desktop Experience), Windows Server 2025 Standard Evaluation 24H2 (Desktop Experience and Server Core) |
+
+Which tool was tested on which system:
 
 | Tool | Verified remote systems |
 | --- | --- |
 | System Monitor metrics, latency and swap files | Test VMs: Debian 13, Ubuntu 24.04 and 26.04, Rocky Linux 10.2 (XFS), Alpine Linux 3.24, Proxmox VE 9.2. Disposable containers: Debian 13, Ubuntu 24.04, Rocky Linux 9 (ext4, XFS, Btrfs) |
 | System Monitor metrics, latency and page file settings | Windows 11 Pro and Windows Server 2025 Core, with no restart performed |
+| Disk Manager (changes only on dedicated loop-device test images) | Test VMs: Ubuntu 20.04, 22.04, 24.04, 25.04 and 26.04, Debian 12 and 13, Rocky Linux 10.2, Alpine Linux 3.24, Kali Linux; Proxmox VE 9.2 read-only. Windows 11 Enterprise and Windows Server 2022/2025 are detected and refused as unsupported |
 | Users, including root SSH access | Test VMs and containers listed above |
 
 On Proxmox VE, root's `authorized_keys` is a link into the cluster file system, so Users shows it but does not change it. On Alpine Linux, a locked root account cannot log in with SSH, even with a key.
@@ -100,13 +115,13 @@ On Proxmox VE, root's `authorized_keys` is a link into the cluster file system, 
 
 Open **Server Diagnostics** between **Plugins** and **Hash & Checksum**. Enter a hostname, IPv4, IPv6 or HTTP(S)/WS(S) URL, choose Auto / IPv4 / IPv6 / Both, and run the overview or an individual tool. No SSH connection or external plugin is required. Results update while probes run, and individual tools or the entire run can be stopped.
 
-The module includes per-packet ICMP graphs/statistics, progressive traceroute, twelve DNS record types with TTL and consistency observations, independently negotiated HTTP versions, request phase timings and independent connections for each HTTP sample, verified gzip/deflate/Brotli (and runtime-supported zstd), TLS 1.2/1.3 certificate inspection, bounded TCP port tests, an SSH host-key handshake without authentication, security-header/redirect checks and an optional WebSocket handshake. It supports Czech, German and English and local light/dark/system themes.
+The module includes per-packet ICMP graphs/statistics (interval 0.05–10 s, total packet count, payload size, TTL and don't-fragment settings, no root required), progressive traceroute, twelve DNS record types with TTL and consistency observations, independently negotiated HTTP versions, request phase timings and independent connections for each HTTP sample, verified gzip/deflate/Brotli (and runtime-supported zstd), TLS 1.2/1.3 certificate inspection, bounded TCP port tests, an SSH host-key handshake without authentication, security-header/redirect checks and an optional WebSocket handshake. It supports Czech, German and English and local light/dark/system themes.
 
 HTTP/1.1, HTTP/2 and HTTP/3 use the pinned bundled curl client, with strict certificate verification and no system curl dependency. HTTP/3 uses `--http3-only` and requires a completed QUIC transfer on the target HTTPS port; otherwise the UI reports unavailable, unsupported or error with a reason. `Alt-Svc` and HTTP/2 fallback never establish HTTP/3 support. DNSSEC is explicitly **not validated**; DS/DNSKEY records are observations. ICMP failures do not label a server offline.
 
 History stays in the application's local data directory. JSON/CSV/TXT reports omit bodies, cookies, authentication metadata and URL queries. Import JSON, reopen or compare saved runs from History. No new npm dependencies are required; OS ping/traceroute tools provide ICMP/route capabilities. The HTTP client and its CA store are bundled; no system curl or first-run download is required. Each HTTP sample starts an independent connection; connection reuse is not measured.
 
-See [implementation, IPC, limits and verification](https://www.sm.ch-j.eu/en/documentation/server-diagnostics/). Run `npm test` for deterministic network tests and `npm run test:diagnostics:ui` for the Electron UI smoke test (requires a graphical desktop).
+See [implementation, IPC, limits and verification](https://sm.ch-j.eu/en/documentation/server-diagnostics/). Run `npm test` for deterministic network tests and `npm run test:diagnostics:ui` for the Electron UI smoke test (requires a graphical desktop).
 
 ### Hash & Checksum
 
@@ -187,7 +202,7 @@ MD5 and SHA-1 are included only for legacy compatibility. xxHash, MurmurHash3, C
 
 #### Plugin API
 
-The Plugin API in the current source tree is `1.4.0`. Plugins requiring `^1.0.0` through `^1.3.0` remain compatible. Version 1.4 adds the `system.memory.manage` permission for controlled swap and page-file changes. Hash & Checksum is a bundled first-party plugin and uses only the narrow `local.hash` permission.
+The Plugin API in the current source tree is `1.7.0`. Plugins requiring `^1.0.0` through `^1.6.0` remain compatible. Version 1.6 adds the `disks.read` and `disks.manage` permissions for the bundled Disk Manager; version 1.7 adds the Key Generator password generator (`keys.password`, `keys.copyPassword`) under the existing `keys.generate` permission. Version 1.4 adds the `system.memory.manage` permission for controlled swap and page-file changes. Version 1.5 adds `files.privileges`, optional sudo options for File Manager operations and the resumable `files.transfers.*` Transfer Manager API (existing `files.transfer` permission). Hash & Checksum is a bundled first-party plugin and uses only the narrow `local.hash` permission.
 
 Core owns every native file, directory, manifest, and export dialog. It gives the sandboxed plugin opaque, plugin-owned selection tokens rather than raw paths, rejects tokens belonging to another plugin, and keeps filesystem access out of the renderer. Hash jobs run in worker threads, stream bounded chunks, support progress and cancellation, and verify stable file identity before returning results. Directory enumeration skips symlinks. Manifest verification rejects symlink escapes, traversal, absolute paths, drive paths, and UNC paths.
 
@@ -195,9 +210,9 @@ Hashing is local-only: the plugin has no network, SSH, or SFTP hashing capabilit
 
 ## Download and installation
 
-Use the [download links at the top of this README](#download-alpha) or the official [release catalog](https://www.sm.ch-j.eu/en/releases/).
+Use the [download links at the top of this README](#download-alpha) or the official [release catalog](https://sm.ch-j.eu/en/releases/).
 
-The [CH-J Server Manager release catalog](https://www.sm.ch-j.eu/en/releases/) lists the packages and channels that are actually available.
+The [CH-J Server Manager release catalog](https://sm.ch-j.eu/en/releases/) lists the packages and channels that are actually available.
 
 Alpha distribution notes:
 
@@ -208,7 +223,7 @@ Alpha distribution notes:
 
 ### Ubuntu APT repository
 
-Ubuntu amd64 users can install and update through the signed [CH-J APT alpha repository](https://www.sm.ch-j.cz/apt/). See [key verification, repository setup and installation](https://www.sm.ch-j.eu/en/documentation/updates-and-gpg/). APT installations display operational guidance and require license acceptance when the application first starts and after updates. Use APT for updates to repository installations and avoid starting the application updater during an APT transaction.
+Ubuntu amd64 users can install and update through the signed [CH-J APT alpha repository](https://sm.ch-j.cz/apt/). See [key verification, repository setup and installation](https://sm.ch-j.eu/en/documentation/updates-and-gpg/). APT installations display operational guidance and require license acceptance when the application first starts and after updates. Use APT for updates to repository installations and avoid starting the application updater during an APT transaction.
 
 ### First launch
 
@@ -228,7 +243,7 @@ The long-term update trust anchor is the primary OpenPGP fingerprint:
 0D92 778A D8EC F85C 80E3  9248 48F2 433A D9CD F453
 ```
 
-To verify a download manually, obtain the bundled [public key](https://www.sm.ch-j.eu/ch-j-signing-public.asc), check that its primary fingerprint matches the value above, and import it with `gpg --import ch-j-signing-public.asc`. Verify the downloaded manifest with `gpg --verify SHA512SUMS.asc SHA512SUMS`, then check the files with `shasum -a 512 -c SHA512SUMS` (macOS) or `sha512sum -c SHA512SUMS` (Linux). Windows PowerShell provides `Get-FileHash -Algorithm SHA512 <file>`. Each installer also has a detached `.asc` signature that can be checked with `gpg --verify <file>.asc <file>`.
+To verify a download manually, obtain the bundled [public key](https://sm.ch-j.eu/ch-j-signing-public.asc), check that its primary fingerprint matches the value above, and import it with `gpg --import ch-j-signing-public.asc`. Verify the downloaded manifest with `gpg --verify SHA512SUMS.asc SHA512SUMS`, then check the files with `shasum -a 512 -c SHA512SUMS` (macOS) or `sha512sum -c SHA512SUMS` (Linux). Windows PowerShell provides `Get-FileHash -Algorithm SHA512 <file>`. Each installer also has a detached `.asc` signature that can be checked with `gpg --verify <file>.asc <file>`.
 
 Valid signing subkeys may be rotated as long as they remain cryptographically bound to this primary key and are valid for signing. Revoked, expired, unknown, malformed, or otherwise invalid keys and signatures block installation.
 
@@ -238,7 +253,7 @@ When connecting to a server for the first time, verify the displayed SSH host-ke
 
 ### Vault and platform security
 
-Optional Touch ID, Windows Hello (including PIN) and Ubuntu fingerprint unlock integrate with the existing encrypted Vault, with master-password fallback, CS/DE/EN settings, inactivity locking and optional focus locking. Windows and Linux provide convenience unlock; macOS uses biometric-gated Keychain access. **Locking disconnects SSH sessions and closes plugins.** Native hardware authentication still needs interactive verification. See [setup, dependencies, platform security differences and verification](https://www.sm.ch-j.eu/en/documentation/security-and-backups/).
+Optional Touch ID, Windows Hello (including PIN) and Ubuntu fingerprint unlock integrate with the existing encrypted Vault, with master-password fallback, CS/DE/EN settings, inactivity locking and optional focus locking. Windows and Linux provide convenience unlock; macOS seals the Vault key to a Touch ID-gated Secure Enclave key. **Locking disconnects SSH sessions and closes plugins.** Native hardware authentication still needs interactive verification. See [setup, dependencies, platform security differences and verification](https://sm.ch-j.eu/en/documentation/security-and-backups/).
 
 On macOS, `EHOSTUNREACH` for local SSH servers may require allowing **CH-J Server Manager** under **System Settings → Privacy & Security → Local Network**, then restarting the app. This build declares the usage reason and explains the error. Ubuntu packages include standard icon sizes and a matching desktop/window identity.
 
@@ -248,25 +263,25 @@ Create and test appropriate backups of remote data and connection information be
 
 ### License and mandatory acceptance
 
-This edition of CH-J Server Manager is expressly distributed under the **CH-J Proprietary Software License, version 1.14** (October 11, 2026). See the [complete license](https://www.sm.ch-j.eu/en/license/). Commercial and non-commercial use are free of license fees indefinitely under its terms. Third-party materials retain their separate licenses and notices; this application license does not replace them.
+This edition of CH-J Server Manager is expressly distributed under the **CH-J Proprietary Software License, version 1.14** (October 11, 2026). See the [complete license](https://sm.ch-j.eu/en/license/). Commercial and non-commercial use are free of license fees indefinitely under its terms. Third-party materials retain their separate licenses and notices; this application license does not replace them.
 
 The license integration described here applies to newly built packages. Existing published downloads retain their original contents and licensing information.
 
-Website downloads start immediately with the Download button, without a confirmation page. License and operational guidance remain available on the website and in the app. Interactive Windows NSIS installation displays the guidance before the complete license and requires license acceptance. macOS DMG, Debian/Ubuntu and silent installation defer guidance and license acceptance to first launch; the application displays the guidance before license acceptance at first launch. Every platform requires per-user acceptance before using a new or updated build, including updates with the same version number. The required checkbox combines license consent with acknowledgment of data-loss risks, the need for appropriate backups before risky operations, and the fact that the application does not guarantee backup existence or recoverability. Declining exits the application. The acceptance record is local; no activation or reporting is required. See [license acceptance and packaging](https://www.sm.ch-j.eu/en/license/).
+Website downloads start immediately with the Download button, without a confirmation page. License and operational guidance remain available on the website and in the app. Interactive Windows NSIS installation displays the guidance before the complete license and requires license acceptance. macOS DMG, Debian/Ubuntu and silent installation defer guidance and license acceptance to first launch; the application displays the guidance before license acceptance at first launch. Every platform requires per-user acceptance before using a new or updated build, including updates with the same version number. The required checkbox combines license consent with acknowledgment of data-loss risks, the need for appropriate backups before risky operations, and the fact that the application does not guarantee backup existence or recoverability. Declining exits the application. The acceptance record is local; no activation or reporting is required. See [license acceptance and packaging](https://sm.ch-j.eu/en/license/).
 
-The application bundles [documentation](https://www.sm.ch-j.eu/en/documentation/), including [Provozní bezpečnost a zálohování (česky)](https://www.sm.ch-j.cz/cs/source/?path=docs%2Fprovozni-bezpecnost-a-zalohovani.md), [Operational Safety and Backup Guidance (English)](https://www.sm.ch-j.eu/en/source/?path=docs%2Foperational-safety-and-backup-guidance.md) and [Betriebssicherheit und Datensicherung (Deutsch)](https://www.sm.ch-j.de/de/source/?path=docs%2Fbetriebssicherheit-und-datensicherung.md). Displaying these recommendations is mandatory before proceeding; following them remains optional. They are informational and non-binding, are not part of the license and do not require separate acceptance. The application displays them again before license acceptance after every update, or if the bundled guidance changes. They are available in the application under **Settings → Licenses and documentation** and on the [website license page](https://www.sm.ch-j.eu/en/license/).
+The application bundles [documentation](https://sm.ch-j.eu/en/documentation/), including [Provozní bezpečnost a zálohování (česky)](https://sm.ch-j.cz/cs/source/?path=docs%2Fprovozni-bezpecnost-a-zalohovani.md), [Operational Safety and Backup Guidance (English)](https://sm.ch-j.eu/en/source/?path=docs%2Foperational-safety-and-backup-guidance.md) and [Betriebssicherheit und Datensicherung (Deutsch)](https://sm.ch-j.de/de/source/?path=docs%2Fbetriebssicherheit-und-datensicherung.md). Displaying these recommendations is mandatory before proceeding; following them remains optional. They are informational and non-binding, are not part of the license and do not require separate acceptance. The application displays them again before license acceptance after every update, or if the bundled guidance changes. They are available in the application under **Settings → Licenses and documentation** and on the [website license page](https://sm.ch-j.eu/en/license/).
 
 ## Documentation and source catalog
 
-[Browse the application source](https://www.sm.ch-j.eu/en/source/) on the CH-J website, with directories, file views, line links and a complete source archive. Source availability does not grant rights beyond the [CH-J Proprietary Software License 1.14](https://www.sm.ch-j.eu/en/license/). The [GitHub repository](https://github.com/ch-j-code/CH-J-Servermanager) contains only this README; the source and release downloads are hosted on the CH-J website.
+[Browse the application source](https://sm.ch-j.eu/en/source/) on the CH-J website, with directories, file views, line links and a complete source archive. Source availability does not grant rights beyond the [CH-J Proprietary Software License 1.14](https://sm.ch-j.eu/en/license/). The [GitHub repository](https://github.com/ch-j-code/CH-J-Servermanager) contains only this README; the source and release downloads are hosted on the CH-J website.
 
-- [Getting started and documentation](https://www.sm.ch-j.eu/en/documentation/)
-- [SSH, SFTP and remote editing](https://www.sm.ch-j.eu/en/documentation/ssh-and-sftp/)
-- [Server Diagnostics](https://www.sm.ch-j.eu/en/documentation/server-diagnostics/)
-- [Security and backups](https://www.sm.ch-j.eu/en/documentation/security-and-backups/)
-- [Updates, signatures and APT setup](https://www.sm.ch-j.eu/en/documentation/updates-and-gpg/)
-- [Desktop source catalog — Czech](https://www.sm.ch-j.cz/cs/source/)
-- [Desktop source catalog — English](https://www.sm.ch-j.eu/en/source/)
+- [Getting started and documentation](https://sm.ch-j.eu/en/documentation/)
+- [SSH, SFTP and remote editing](https://sm.ch-j.eu/en/documentation/ssh-and-sftp/)
+- [Server Diagnostics](https://sm.ch-j.eu/en/documentation/server-diagnostics/)
+- [Security and backups](https://sm.ch-j.eu/en/documentation/security-and-backups/)
+- [Updates, signatures and APT setup](https://sm.ch-j.eu/en/documentation/updates-and-gpg/)
+- [Desktop source catalog — Czech](https://sm.ch-j.cz/cs/source/)
+- [Desktop source catalog — English](https://sm.ch-j.eu/en/source/)
 
 The source browser provides directories, file views, line links and release archives. Development commands below apply to an authorised source archive downloaded from that catalog. This GitHub repository contains only `README.md`; application paths mentioned in this document refer to the downloaded sources.
 
@@ -283,8 +298,8 @@ Two independent applications share the CH-J server-management focus. Each connec
 | Profile exchange | JSON version 1 and desktop CSV | Shared JSON version 1; no CSV |
 | Status | Development alpha `0.0.1` | Development alpha `0.0.1`; Android packages and unsigned iOS development artifacts on the official website |
 | Project README | [Desktop on GitHub](https://github.com/ch-j-code/CH-J-Servermanager) | [SM Mobile on GitHub](https://github.com/ch-j-code/SM-Mobile) |
-| Official website | [Desktop](https://www.sm.ch-j.cz/cs/) | [Mobile](https://www.sm.ch-j.cz/cs/?edition=mobile) |
-| Source catalog | [Desktop sources](https://www.sm.ch-j.cz/cs/source/) | [Mobile sources](https://www.sm.ch-j.cz/cs/source/?edition=mobile) |
+| Official website | [Desktop](https://sm.ch-j.cz/cs/) | [Mobile](https://sm.ch-j.cz/cs/?edition=mobile) |
+| Source catalog | [Desktop sources](https://sm.ch-j.cz/cs/source/) | [Mobile sources](https://sm.ch-j.cz/cs/source/?edition=mobile) |
 
 The shared `chj-server-profiles` JSON format, version 1, transfers only profile name, host, username and port. Passwords, private keys, passphrases and host-key fingerprints are excluded. Configure authentication and verify host keys after import. The two Vault formats are separate and cannot be exchanged.
 
@@ -292,17 +307,17 @@ SM Mobile's tablet layout is implemented, while physical iPad validation remains
 
 ## Official websites
 
-- [CH-J Server Manager — Czech](https://www.sm.ch-j.cz/cs/)
-- [CH-J Server Manager — German](https://www.sm.ch-j.de/de/)
-- [CH-J Server Manager — English](https://www.sm.ch-j.eu/en/)
-- [SM Mobile — official website](https://www.sm.ch-j.cz/cs/?edition=mobile)
-- [SM Mobile — downloads and build details](https://www.sm.ch-j.cz/cs/releases/?edition=mobile)
+- [CH-J Server Manager — Czech](https://sm.ch-j.cz/cs/)
+- [CH-J Server Manager — German](https://sm.ch-j.de/de/)
+- [CH-J Server Manager — English](https://sm.ch-j.eu/en/)
+- [SM Mobile — official website](https://sm.ch-j.cz/cs/?edition=mobile)
+- [SM Mobile — downloads and build details](https://sm.ch-j.cz/cs/releases/?edition=mobile)
 
 ## Project and development
 
 The desktop source archive contains a complete, self-contained application source tree. It can be copied into an otherwise empty working directory and used for dependency installation, testing, development startup, and supported platform builds without any sibling source projects.
 
-The application communicates with an update service through its public HTTPS contract and supports independently distributed plugin packages through Plugin API 1.4. External services, plugin sources, and release tooling are not runtime, test, or build dependencies. Bundled first-party plugins in `src/main/firstPartyPlugins/` and the internal plugin framework in `src/main/plugins/` are included in this application tree.
+The application communicates with an update service through its public HTTPS contract and supports independently distributed plugin packages through Plugin API 1.7. External services, plugin sources, and release tooling are not runtime, test, or build dependencies. Bundled first-party plugins in `src/main/firstPartyPlugins/` and the internal plugin framework in `src/main/plugins/` are included in this application tree.
 
 ### Development from the official sources
 
