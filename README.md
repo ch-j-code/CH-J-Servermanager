@@ -6,9 +6,9 @@ CH-J Server Manager is a desktop SSH and SFTP client for Linux server administra
 
 | Platform | Architecture | Package |
 | --- | --- | --- |
-| macOS | Apple Silicon (`arm64`) | [Download DMG for macOS](https://sm.ch-j.eu/download.php?channel=alpha&platform=mac&arch=arm64&lang=en) |
-| Windows 11 | `x64` | [Download for Windows](https://sm.ch-j.eu/download.php?channel=alpha&platform=win&arch=x64&lang=en) |
-| Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://sm.ch-j.eu/download.php?channel=alpha&platform=ubuntu&arch=x64&lang=en) |
+| macOS | Apple Silicon (`arm64`) | [Download DMG for macOS](https://sm.ch-j.eu/download.php?channel=beta&platform=mac&arch=arm64&lang=en) |
+| Windows 11 | `x64` | [Download for Windows](https://sm.ch-j.eu/download.php?channel=beta&platform=win&arch=x64&lang=en) |
+| Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://sm.ch-j.eu/download.php?channel=beta&platform=ubuntu&arch=x64&lang=en) |
 
 **Development alpha:** back up important data before installation or updates.
 
@@ -18,11 +18,11 @@ CH-J Server Manager is a desktop SSH and SFTP client for Linux server administra
 
 The project is currently in **alpha**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the current application architecture; the product name remains CH-J Server Manager.
 
-The public desktop catalog checked on **October 22, 2026** lists version `0.0.1`, build `core-20261022T201910Z-8e2810f53c90`, as the default download and the default source code. Check the [release catalog](https://sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
+The public desktop catalog checked on **October 24, 2026** lists version `0.1.0` in the **beta** channel, build `core-20261024T121943Z-f4fc7ca3b8b2`, as the default download and the default source code. Earlier `0.0.1` builds remain in the alpha channel; the update channel is selected in the app settings. Check the [release catalog](https://sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
 
-This build adds the Disk Manager for Linux servers, a resizable left sidebar with full, compact, two-column and hidden modes and icons, legacy DSA keys inside the packaged app and a password generator in Key Generator. It also contains privileged file operations through the shared sudo executor and resumable transfer queues. Earlier builds added separate Linux and Windows System Monitor collectors with memory and virtual memory management, root SSH access management in Users, the Server Diagnostics workspace (CS/DE/EN), Monaco remote text editing with Core conflict checks and recovery safeguards, and separate SSH response-time and ICMP measurements. See [remote editor and latency details](https://sm.ch-j.eu/en/documentation/ssh-and-sftp/) and [diagnostics capabilities and limits](https://sm.ch-j.eu/en/documentation/server-diagnostics/).
+Version 0.1.0 fixes Windows servers stalling when several tools (for example System Monitor and Users) worked on the same SSH session at once, reports update checks correctly when they finish, and was functionally tested end to end on Ubuntu and Windows 11 Pro. It contains the Disk Manager for Linux servers, a resizable left sidebar with full, compact, two-column and hidden modes and icons, legacy DSA keys inside the packaged app and a password generator in Key Generator. It also contains privileged file operations through the shared sudo executor and resumable transfer queues. Earlier builds added separate Linux and Windows System Monitor collectors with memory and virtual memory management, root SSH access management in Users, the Server Diagnostics workspace (CS/DE/EN), Monaco remote text editing with Core conflict checks and recovery safeguards, and separate SSH response-time and ICMP measurements. See [remote editor and latency details](https://sm.ch-j.eu/en/documentation/ssh-and-sftp/) and [diagnostics capabilities and limits](https://sm.ch-j.eu/en/documentation/server-diagnostics/).
 
-The current desktop installers have detached OpenPGP signatures. The release [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261022T201910Z-8e2810f53c90/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261022T201910Z-8e2810f53c90/SHA512SUMS.asc) cover the DMG, EXE and DEB. Source archives and their release metadata are available in the source catalog.
+The current desktop installers have detached OpenPGP signatures. The release [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261024T121943Z-f4fc7ca3b8b2/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261024T121943Z-f4fc7ca3b8b2/SHA512SUMS.asc) cover the DMG, EXE and DEB. Source archives and their release metadata are available in the source catalog.
 
 ### Current limitations
 
@@ -62,7 +62,7 @@ The current catalog has no Intel Mac installer. Compatibility with other Linux d
 - a bundled local Hash & Checksum tool in the sidebar for calculation, verification, comparison, and checksum manifests;
 - sandboxed plugin windows with capability-based access to Core services;
 - dark title bars on Windows and Linux, plugin windows kept above the main window, and a bottom bar for collapsed plugins;
-- alpha, beta, and stable update-channel selection; the current public packages are alpha;
+- alpha, beta, and stable update-channel selection; the current desktop release `0.1.0` is published in the beta channel (new installations check the beta channel);
 - application updates protected by size checks, SHA-512, and mandatory detached OpenPGP signatures.
 
 ### System Monitor and virtual memory
@@ -296,7 +296,7 @@ Two independent applications share the CH-J server-management focus. Each connec
 | Server access | Multiple SSH sessions, interactive terminal, SFTP and Monaco remote editing | One active SSH session, PTY terminal and SFTP browsing/transfers; no remote text editor |
 | Administration | Diagnostics, local Hash & Checksum and first-party management tools | Foreground Linux monitoring and IPv4/IPv6 DNS/TCP diagnostics; no desktop plugin system or local hashing tool |
 | Profile exchange | JSON version 1 and desktop CSV | Shared JSON version 1; no CSV |
-| Status | Development alpha `0.0.1` | Development alpha `0.0.1`; Android packages and unsigned iOS development artifacts on the official website |
+| Status | Beta `0.1.0` | Development alpha `0.0.1`; Android packages and unsigned iOS development artifacts on the official website |
 | Project README | [Desktop on GitHub](https://github.com/ch-j-code/CH-J-Servermanager) | [SM Mobile on GitHub](https://github.com/ch-j-code/SM-Mobile) |
 | Official website | [Desktop](https://sm.ch-j.cz/cs/) | [Mobile](https://sm.ch-j.cz/cs/?edition=mobile) |
 | Source catalog | [Desktop sources](https://sm.ch-j.cz/cs/source/) | [Mobile sources](https://sm.ch-j.cz/cs/source/?edition=mobile) |
