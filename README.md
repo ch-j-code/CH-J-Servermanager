@@ -2,7 +2,7 @@
 
 CH-J Server Manager is a desktop SSH and SFTP client for Linux server administration, with Windows server support in selected tools, and a local file hash calculator and checksum verification tool for Windows, macOS, and Linux. It combines server profiles, an interactive terminal, file management, monitoring, log inspection, user administration, NGINX management, and 49 hashing algorithms in one Electron application.
 
-## Download alpha
+## Download beta
 
 | Platform | Architecture | Package |
 | --- | --- | --- |
@@ -10,13 +10,13 @@ CH-J Server Manager is a desktop SSH and SFTP client for Linux server administra
 | Windows 11 | `x64` | [Download for Windows](https://sm.ch-j.eu/download.php?channel=beta&platform=win&arch=x64&lang=en) |
 | Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://sm.ch-j.eu/download.php?channel=beta&platform=ubuntu&arch=x64&lang=en) |
 
-**Development alpha:** back up important data before installation or updates.
+**Beta `0.1.0`:** back up important data before installation or updates.
 
 [Browse source code](https://sm.ch-j.eu/en/source/) · [Releases](https://sm.ch-j.eu/en/releases/) · [Documentation](https://sm.ch-j.eu/en/documentation/)
 
 ## Development status
 
-The project is currently in **alpha**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the current application architecture; the product name remains CH-J Server Manager.
+The project is currently in **beta**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the current application architecture; the product name remains CH-J Server Manager.
 
 The public desktop catalog checked on **October 24, 2026** lists version `0.1.0` in the **beta** channel, build `core-20261024T121943Z-f4fc7ca3b8b2`, as the default download and the default source code. Earlier `0.0.1` builds remain in the alpha channel; the update channel is selected in the app settings. Check the [release catalog](https://sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
 
@@ -33,11 +33,11 @@ The following features are planned but not yet available:
 - SSH jump hosts and port forwarding;
 - Safe Mode and additional tools.
 
-This list is not exhaustive. Behavior and data formats may still change during the alpha phase.
+This list is not exhaustive. Behavior and data formats may still change during the beta phase.
 
 ## Supported operating systems
 
-| Operating system | Current target | Public alpha package |
+| Operating system | Current target | Public beta package |
 | --- | --- | --- |
 | Windows | Windows 11, `x64` | NSIS `.exe` installer |
 | macOS | Apple Silicon, `arm64` | `.dmg` |
@@ -210,16 +210,16 @@ Hashing is local-only: the plugin has no network, SSH, or SFTP hashing capabilit
 
 ## Download and installation
 
-Use the [download links at the top of this README](#download-alpha) or the official [release catalog](https://sm.ch-j.eu/en/releases/).
+Use the [download links at the top of this README](#download-beta) or the official [release catalog](https://sm.ch-j.eu/en/releases/).
 
 The [CH-J Server Manager release catalog](https://sm.ch-j.eu/en/releases/) lists the packages and channels that are actually available.
 
-Alpha distribution notes:
+Beta distribution notes:
 
 - macOS builds currently target Apple Silicon only. Test builds may be ad hoc signed and can require manual approval in **Privacy & Security** until Developer ID signing and notarization are enabled.
 - Windows builds use an NSIS installer; Windows production code signing is not yet confirmed.
 - Ubuntu/Debian builds use a `.deb` package. For an initial installation, use `sudo apt install ./<downloaded-file>.deb` if the graphical software center rejects the package as coming from an unknown publisher.
-- Back up important connection details before testing an alpha update.
+- Back up important connection details before testing a beta update.
 
 ### Ubuntu APT repository
 
@@ -247,7 +247,7 @@ To verify a download manually, obtain the bundled [public key](https://sm.ch-j.e
 
 Valid signing subkeys may be rotated as long as they remain cryptographically bound to this primary key and are valid for signing. Revoked, expired, unknown, malformed, or otherwise invalid keys and signatures block installation.
 
-The alpha service is still undergoing distribution hardening. In particular, standard CA verification for the explicitly allowlisted update host is temporarily relaxed in test mode, macOS production signing/notarization is not yet enabled, and Windows production code signing is not yet confirmed. OpenPGP verification remains mandatory for application update artifacts, but alpha builds should not be treated as production releases.
+The beta service is still undergoing distribution hardening. In particular, standard CA verification for the explicitly allowlisted update host is temporarily relaxed in test mode, macOS production signing/notarization is not yet enabled, and Windows production code signing is not yet confirmed. OpenPGP verification remains mandatory for application update artifacts, but alpha builds should not be treated as production releases.
 
 When connecting to a server for the first time, verify the displayed SSH host-key fingerprint through another trusted channel. If a known host key changes, verify both the old and new fingerprints before accepting the replacement.
 
@@ -259,7 +259,7 @@ On macOS, `EHOSTUNREACH` for local SSH servers may require allowing **CH-J Serve
 
 ### Backups and data loss
 
-Create and test appropriate backups of remote data and connection information before risky operations or alpha updates. Verify that restoration works. The application does not guarantee that backups exist or are recoverable. Profile export transfers connection metadata only; it is not a backup of the encrypted Vault, saved credentials or remote files.
+Create and test appropriate backups of remote data and connection information before risky operations or beta updates. Verify that restoration works. The application does not guarantee that backups exist or are recoverable. Profile export transfers connection metadata only; it is not a backup of the encrypted Vault, saved credentials or remote files.
 
 ### License and mandatory acceptance
 
