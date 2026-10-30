@@ -1,8 +1,14 @@
 # CH-J Server Manager
 
-CH-J Server Manager is a desktop SSH and SFTP client for Linux server administration, with Windows server support in selected tools, and a local file hash calculator and checksum verification tool for Windows, macOS, and Linux. It combines server profiles, an interactive terminal, file management, monitoring, log inspection, user administration, NGINX management, and 49 hashing algorithms in one Electron application.
+CH-J Server Manager is a desktop SSH and SFTP client for Linux server administration, with Windows server support in selected tools, and a local file hash calculator and checksum verification tool for Windows, macOS, and Linux. It combines server profiles, an interactive terminal, a multi-panel file manager, monitoring, log inspection, user administration, NGINX management, disk management, and 49 hashing algorithms in one application.
 
-## Download beta
+Version `0.1.1` is a new implementation written in **Rust** with **Tauri 2**. The previous version, `0.1.0`, is built on **Electron**. Both versions belong to the same product line and use the same data directory and vault format.
+
+## Download
+
+### Beta — current public release
+
+Version `0.1.0` (Electron).
 
 | Platform | Architecture | Package |
 | --- | --- | --- |
@@ -10,40 +16,78 @@ CH-J Server Manager is a desktop SSH and SFTP client for Linux server administra
 | Windows 11 | `x64` | [Download for Windows](https://sm.ch-j.eu/download.php?channel=beta&platform=win&arch=x64&lang=en) |
 | Ubuntu 24.04 | `x64` | [Download for Ubuntu](https://sm.ch-j.eu/download.php?channel=beta&platform=ubuntu&arch=x64&lang=en) |
 
-**Beta `0.1.0`:** back up important data before installation or updates.
+### Alpha — newest test version
+
+Alpha `0.1.1` (Rust + Tauri 2) is in preparation. These links always point to the newest package published in the alpha channel; **until alpha `0.1.1` is published, they may not offer a file.**
+
+| Platform | Architecture | Package |
+| --- | --- | --- |
+| macOS | Apple Silicon (`arm64`) | [Download alpha for macOS](https://sm.ch-j.eu/download.php?channel=alpha&platform=mac&arch=arm64&lang=en) |
+| Windows 11 | `x64` | [Download alpha for Windows](https://sm.ch-j.eu/download.php?channel=alpha&platform=win&arch=x64&lang=en) |
+| Ubuntu 24.04 | `x64` | [Download alpha for Ubuntu](https://sm.ch-j.eu/download.php?channel=alpha&platform=ubuntu&arch=x64&lang=en) |
+
+Back up important data before installation or updates, especially before testing an alpha.
 
 [Browse source code](https://sm.ch-j.eu/en/source/) · [Releases](https://sm.ch-j.eu/en/releases/) · [Documentation](https://sm.ch-j.eu/en/documentation/)
 
+**Looking for the mobile app?** SM Mobile for Android, iOS and iPadOS: [website](https://sm.ch-j.cz/cs/?edition=mobile) · [downloads and build details](https://sm.ch-j.cz/cs/releases/?edition=mobile) · [sources](https://sm.ch-j.cz/cs/source/?edition=mobile) · [README on GitHub](https://github.com/ch-j-code/SM-Mobile). See also [CH-J Ecosystem](#ch-j-ecosystem--desktop--mobile).
+
 ## Development status
 
-The project is currently in **beta**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the current application architecture; the product name remains CH-J Server Manager.
+| Channel | Version | Technology | Status |
+| --- | --- | --- | --- |
+| Beta | `0.1.0` | Electron | Current public release, build `core-20261024T135205Z-7c487d719de2` |
+| Alpha | `0.1.1` | Rust + Tauri 2 | In preparation, not yet published |
 
-The public desktop catalog checked on **October 24, 2026** lists version `0.1.0` in the **beta** channel, build `core-20261024T135205Z-7c487d719de2`, as the default download and the default source code. Earlier `0.0.1` builds remain in the alpha channel; the update channel is selected in the app settings. Check the [release catalog](https://sm.ch-j.eu/en/releases/) for current build IDs and packages. A release package format does not establish stable status.
+The project is in **alpha and beta testing**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the application architecture; the product name remains CH-J Server Manager. Check the [release catalog](https://sm.ch-j.eu/en/releases/) for what is currently published. The features below marked as new belong to `0.1.1` and are not part of the `0.1.0` beta.
 
-Version 0.1.0 fixes Windows servers stalling when several tools (for example System Monitor and Users) worked on the same SSH session at once, reports update checks correctly when they finish, shows all tool windows (File Manager, System Monitor, Users, Disk Manager, Key Generator, Log Viewer, NGINX Manager and Hash & Checksum) in the language selected in the app (English, German or Czech), and was functionally tested end to end on Ubuntu and Windows 11 Pro. It contains the Disk Manager for Linux servers, a resizable left sidebar with full, compact, two-column and hidden modes and icons, legacy DSA keys inside the packaged app and a password generator in Key Generator. It also contains privileged file operations through the shared sudo executor and resumable transfer queues. Earlier builds added separate Linux and Windows System Monitor collectors with memory and virtual memory management, root SSH access management in Users, the Server Diagnostics workspace (CS/DE/EN), Monaco remote text editing with Core conflict checks and recovery safeguards, and separate SSH response-time and ICMP measurements. See [remote editor and latency details](https://sm.ch-j.eu/en/documentation/ssh-and-sftp/) and [diagnostics capabilities and limits](https://sm.ch-j.eu/en/documentation/server-diagnostics/).
+The `0.1.0` installers have detached OpenPGP signatures. The release [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS.asc) cover the DMG, EXE and DEB.
 
-The current desktop installers have detached OpenPGP signatures. The release [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS.asc) cover the DMG, EXE and DEB. Source archives and their release metadata are available in the source catalog.
+## From Electron to Rust and Tauri
+
+Version `0.1.1` replaces the Electron main process with a Rust Core and the bundled Chromium with the WebView of the operating system: WKWebView on macOS, WebView2 on Windows and WebKitGTK on Linux.
+
+- **Smaller packages:** the Rust build has no bundled browser engine. Exact sizes are listed with each release.
+- **Same data:** `0.1.1` uses the data directory and vault format of `0.1.0`. Back up your data before you try it.
+- **Same tools:** every Electron feature, IPC channel and module has a counterpart in the Rust Core. The Module API stays compatible at version `1.7.0`.
+- **Same safety rules:** vault encryption, SSH host-key checks, sandboxed module windows, signed updates and the mandatory license flow are carried over.
+- **Different requirements:** Linux needs WebKitGTK 4.1, which the `.deb` package declares as a dependency. Windows needs the WebView2 runtime, which is part of Windows 11.
+
+### New in 0.1.1
+
+- **SSH jump hosts:** connect through a saved or manually entered jump host, with chains of up to three saved hosts and a host-key check on every hop.
+- **Manual host:** connect to a server that is not saved. Nothing about it is stored.
+- **Two terminals:** side by side or stacked, on one server or on two different ones, with a draggable divider. Hiding a terminal does not end its session.
+- **Availability monitor:** all saved servers are checked in the background with a TCP connection to the SSH port, without logging in. Results appear in the server list and in the terminal menu. Offline means that the SSH port cannot be reached from this network; the server itself may still be running. A server reached only through a jump host is checked through an open session to that jump host and is otherwise shown as not verified, never as online.
+- **File Manager with one, two or three panels:** each panel shows the local disk or any open SSH session. Copy and move between panels with Cmd/Ctrl+C, X and V, by dragging, or from the context menu. Create a file with any name and extension and edit it in Monaco.
+- **Server-to-server transfers:** data streams from one SFTP session to the other through this computer without being stored on its disk. Transfers use the queue, with pause, resume, cancel and conflict handling.
+- **Safe moves:** a source file is deleted only after its SHA-256 matched and only if it has not changed. Otherwise it stays, and the queue says why.
+- **System Monitor:** every CPU socket and every GPU or accelerator is listed. NVIDIA metrics come from `nvidia-smi` and AMD metrics from sysfs. Emulated GPUs show their name and PCI ID; values a server does not report are shown as unavailable.
+- **Session choice in modules:** with one connection a module uses it automatically; with several it asks which one to use. A module never moves to another server by itself.
+- **42 interface languages**, including right-to-left languages. The license and the safety guidance stay in Czech, German and English.
 
 ### Current limitations
 
 The following features are planned but not yet available:
 
-- migration of data from older application versions;
 - remote archive extraction;
-- SSH jump hosts and port forwarding;
+- SSH port forwarding;
+- dragging files from Finder or Explorer into a panel; copy them from the Local disk panel instead;
+- direct server-to-server transfers: the data always passes through this computer;
+- server-to-server copies of files readable only with sudo;
 - Safe Mode and additional tools.
 
-This list is not exhaustive. Behavior and data formats may still change during the beta phase.
+Alpha `0.1.1` is not yet covered by the same range of tests as `0.1.0`, and Windows and Linux clients have had less testing than macOS. This list is not exhaustive. Behavior and data formats may still change during alpha and beta testing.
 
 ## Supported operating systems
 
-| Operating system | Current target | Public beta package |
+| Operating system | Current target | Package |
 | --- | --- | --- |
 | Windows | Windows 11, `x64` | NSIS `.exe` installer |
 | macOS | Apple Silicon, `arm64` | `.dmg` |
-| Linux | Ubuntu 24.04 LTS, `amd64` | Debian-format `.deb` and signed APT alpha repository |
+| Linux | Ubuntu 24.04 LTS, `amd64` | Debian-format `.deb`; `0.1.0` also has a signed APT alpha repository |
 
-The current catalog has no Intel Mac installer. Compatibility with other Linux distributions and older Windows versions is not verified; a Debian package format alone does not establish support for every Debian-based system.
+No Intel Mac installer is available. Compatibility with other Linux distributions and older Windows versions is not verified; a Debian package format alone does not establish support for every Debian-based system.
 
 ## Available features
 
@@ -53,16 +97,16 @@ The current catalog has no Intel Mac installer. Compatibility with other Linux d
 - mandatory SHA-256 SSH host-key verification and explicit handling of changed host keys;
 - multiple SSH sessions and an interactive terminal;
 - file browsing, editing, upload, download, deletion, and ZIP/TAR/TAR.GZ export through a restricted SFTP interface;
-- Czech, German, and English user interfaces;
+- user interface in 42 languages in `0.1.1` (Czech, German and English in `0.1.0`);
 - Key Generator: SSH keys (Ed25519, RSA, ECDSA and explicitly confirmed legacy DSA/SSH1 RSA) and a password generator (4–70 characters, A–Z, a–z, 1–9 and `-@)¨§'=+`, optional dash after every four characters), copied through the main process clipboard;
 - bundled first-party tools for System Monitor, Key Generator, Log Viewer, Users, File Manager, NGINX Manager, and Disk Manager, with separately distributed plugin updates;
-- Disk Manager (`chj.disks`, Linux servers only): disk map, partitions, file systems, LVM and LUKS layers, automatic expansion after a disk was enlarged, and a reviewed queue of changes that runs as a server-side job (see `docs/disks-plugin.md` for supported operations and limits);
+- Disk Manager (`chj.disks`, Linux servers only): disk map, partitions, file systems, LVM and LUKS layers, automatic expansion after a disk was enlarged, and a reviewed queue of changes that runs as a server-side job (see the bundled `docs/disks-plugin.md` for supported operations and limits);
 - System Monitor and Users for remote Linux servers and Windows servers reached through Windows OpenSSH (see the platform notes below);
 - integrated Server Diagnostics: ICMP, traceroute, DNS, HTTP/1.1/2/3 capability tests, server timings, compression, TLS, TCP ports, local history and JSON/CSV/TXT exports;
 - a bundled local Hash & Checksum tool in the sidebar for calculation, verification, comparison, and checksum manifests;
 - sandboxed plugin windows with capability-based access to Core services;
 - dark title bars on Windows and Linux, plugin windows kept above the main window, and a bottom bar for collapsed plugins;
-- alpha, beta, and stable update-channel selection; the current desktop release `0.1.0` is published in the beta channel (new installations check the beta channel);
+- alpha, beta, and stable update-channel selection;
 - application updates protected by size checks, SHA-512, and mandatory detached OpenPGP signatures.
 
 ### System Monitor and virtual memory
@@ -87,7 +131,7 @@ Users protects the root account: you cannot delete it or change its UID/GID, gro
 
 ### Verified remote server systems
 
-The following server operating systems were used for tests on isolated test machines in October 2026. Results from other versions are not verified:
+The following server operating systems were used for `0.1.0` tests on isolated test machines in October 2026. Results from other versions are not verified. For `0.1.1`, the server functions have so far been run against Ubuntu 24.04, Debian 13, Rocky Linux 10.2 and Windows Server 2025; the complete matrix will be repeated before release:
 
 | Family | Tested versions |
 | --- | --- |
@@ -119,9 +163,9 @@ The module includes per-packet ICMP graphs/statistics (interval 0.05–10 s, tot
 
 HTTP/1.1, HTTP/2 and HTTP/3 use the pinned bundled curl client, with strict certificate verification and no system curl dependency. HTTP/3 uses `--http3-only` and requires a completed QUIC transfer on the target HTTPS port; otherwise the UI reports unavailable, unsupported or error with a reason. `Alt-Svc` and HTTP/2 fallback never establish HTTP/3 support. DNSSEC is explicitly **not validated**; DS/DNSKEY records are observations. ICMP failures do not label a server offline.
 
-History stays in the application's local data directory. JSON/CSV/TXT reports omit bodies, cookies, authentication metadata and URL queries. Import JSON, reopen or compare saved runs from History. No new npm dependencies are required; OS ping/traceroute tools provide ICMP/route capabilities. The HTTP client and its CA store are bundled; no system curl or first-run download is required. Each HTTP sample starts an independent connection; connection reuse is not measured.
+History stays in the application's local data directory. JSON/CSV/TXT reports omit bodies, cookies, authentication metadata and URL queries. Import JSON, reopen or compare saved runs from History. OS ping/traceroute tools provide ICMP/route capabilities. The HTTP client and its CA store are bundled; no system curl or first-run download is required. Each HTTP sample starts an independent connection; connection reuse is not measured.
 
-See [implementation, IPC, limits and verification](https://sm.ch-j.eu/en/documentation/server-diagnostics/). Run `npm test` for deterministic network tests and `npm run test:diagnostics:ui` for the Electron UI smoke test (requires a graphical desktop).
+See [implementation, IPC, limits and verification](https://sm.ch-j.eu/en/documentation/server-diagnostics/). Run `npm test` for the deterministic tests.
 
 ### Hash & Checksum
 
@@ -129,7 +173,7 @@ Calculate file hashes, verify checksums, and compare local files with 49 algorit
 
 Open **Hash & Checksum** from the left sidebar, directly below **Server Diagnostics**, after unlocking the vault. The tool is bundled with the application, opens in its own window, and does not appear in the installed-plugin list.
 
-The interface follows the application's saved language setting: **Czech, German, or English**. Saving a language change updates an already open Hash window, including controls, progress, result statuses, errors, and native file-dialog labels, while preserving selected files, algorithms, parameters, and results.
+The interface follows the application's saved language setting. Saving a language change updates an already open Hash window, including controls, progress, result statuses, errors, and native file-dialog labels, while preserving selected files, algorithms, parameters, and results.
 
 Available functions:
 
@@ -200,26 +244,26 @@ SHAKE128, SHAKE256, and KangarooTwelve allow an output length of **16–1024 byt
 
 MD5 and SHA-1 are included only for legacy compatibility. xxHash, MurmurHash3, CityHash, FarmHash, HighwayHash, SipHash, FNV, CRC, and Adler-32 are not offered as cryptographic integrity proofs.
 
-#### Plugin API
+#### Module API
 
-The Plugin API in the current source tree is `1.7.0`. Plugins requiring `^1.0.0` through `^1.6.0` remain compatible. Version 1.6 adds the `disks.read` and `disks.manage` permissions for the bundled Disk Manager; version 1.7 adds the Key Generator password generator (`keys.password`, `keys.copyPassword`) under the existing `keys.generate` permission. Version 1.4 adds the `system.memory.manage` permission for controlled swap and page-file changes. Version 1.5 adds `files.privileges`, optional sudo options for File Manager operations and the resumable `files.transfers.*` Transfer Manager API (existing `files.transfer` permission). Hash & Checksum is a bundled first-party plugin and uses only the narrow `local.hash` permission.
+The Module API (formerly Plugin API) in the current source tree is `1.7.0`, the same contract as in `0.1.0`. Plugins requiring `^1.0.0` through `^1.6.0` remain compatible. Version 1.6 adds the `disks.read` and `disks.manage` permissions for the bundled Disk Manager; version 1.7 adds the Key Generator password generator (`keys.password`, `keys.copyPassword`) under the existing `keys.generate` permission. Version 1.4 adds the `system.memory.manage` permission for controlled swap and page-file changes. Version 1.5 adds `files.privileges`, optional sudo options for File Manager operations and the resumable `files.transfers.*` Transfer Manager API (existing `files.transfer` permission). Hash & Checksum is a bundled first-party plugin and uses only the narrow `local.hash` permission.
 
-Core owns every native file, directory, manifest, and export dialog. It gives the sandboxed plugin opaque, plugin-owned selection tokens rather than raw paths, rejects tokens belonging to another plugin, and keeps filesystem access out of the renderer. Hash jobs run in worker threads, stream bounded chunks, support progress and cancellation, and verify stable file identity before returning results. Directory enumeration skips symlinks. Manifest verification rejects symlink escapes, traversal, absolute paths, drive paths, and UNC paths.
+Core owns every native file, directory, manifest, and export dialog. It gives the sandboxed plugin opaque, plugin-owned selection tokens rather than raw paths, rejects tokens belonging to another plugin, and keeps filesystem access out of the renderer. Hash jobs run in background tasks of the Rust Core, stream bounded chunks, support progress and cancellation, and verify stable file identity before returning results. Directory enumeration skips symlinks. Manifest verification rejects symlink escapes, traversal, absolute paths, drive paths, and UNC paths.
 
 Hashing is local-only: the plugin has no network, SSH, or SFTP hashing capability and does not upload file contents or digests. It supports individual files, batches, recursive directories, file comparison, and GNU, BSD, and SFV manifests across 49 algorithms. MD5 and SHA-1 are retained only for legacy compatibility; fast hashes and checksums are explicitly non-cryptographic.
 
 ## Download and installation
 
-Use the [download links at the top of this README](#download-beta) or the official [release catalog](https://sm.ch-j.eu/en/releases/).
+Use the [download links at the top of this README](#download) or the official [release catalog](https://sm.ch-j.eu/en/releases/).
 
 The [CH-J Server Manager release catalog](https://sm.ch-j.eu/en/releases/) lists the packages and channels that are actually available.
 
-Beta distribution notes:
+Distribution notes:
 
 - macOS builds currently target Apple Silicon only. Test builds may be ad hoc signed and can require manual approval in **Privacy & Security** until Developer ID signing and notarization are enabled.
 - Windows builds use an NSIS installer; Windows production code signing is not yet confirmed.
 - Ubuntu/Debian builds use a `.deb` package. For an initial installation, use `sudo apt install ./<downloaded-file>.deb` if the graphical software center rejects the package as coming from an unknown publisher.
-- Back up important connection details before testing a beta update.
+- Back up important connection details before testing an alpha or beta update.
 
 ### Ubuntu APT repository
 
@@ -235,7 +279,7 @@ Private-key passphrases are intentionally not stored and must be entered for eac
 
 ## Security, encryption, backups and license
 
-Update verification is performed in the Electron main process and fails closed. The application downloads the selected artifact and its detached `.asc` signature, checks the expected size and SHA-512 hash, and verifies the signature with the bundled CH-J public key. Immediately before installation, it re-checks the same private-cache files to reduce time-of-check/time-of-use risk. The renderer cannot supply an artifact path, public key, fingerprint, or a forged verification result.
+Update verification is performed in the Rust Core (`0.1.0`: the Electron main process) and fails closed. The application downloads the selected artifact and its detached `.asc` signature, checks the expected size and SHA-512 hash, and verifies the signature with the bundled CH-J public key. Immediately before installation, it re-checks the same private-cache files to reduce time-of-check/time-of-use risk. The renderer cannot supply an artifact path, public key, fingerprint, or a forged verification result.
 
 The long-term update trust anchor is the primary OpenPGP fingerprint:
 
@@ -247,19 +291,19 @@ To verify a download manually, obtain the bundled [public key](https://sm.ch-j.e
 
 Valid signing subkeys may be rotated as long as they remain cryptographically bound to this primary key and are valid for signing. Revoked, expired, unknown, malformed, or otherwise invalid keys and signatures block installation.
 
-The beta service is still undergoing distribution hardening. In particular, standard CA verification for the explicitly allowlisted update host is temporarily relaxed in test mode, macOS production signing/notarization is not yet enabled, and Windows production code signing is not yet confirmed. OpenPGP verification remains mandatory for application update artifacts, but alpha builds should not be treated as production releases.
+The update service is still undergoing distribution hardening. In particular, standard CA verification for the explicitly allowlisted update host is temporarily relaxed in test mode, macOS production signing/notarization is not yet enabled, and Windows production code signing is not yet confirmed. OpenPGP verification remains mandatory for application update artifacts, but alpha builds should not be treated as production releases.
 
 When connecting to a server for the first time, verify the displayed SSH host-key fingerprint through another trusted channel. If a known host key changes, verify both the old and new fingerprints before accepting the replacement.
 
 ### Vault and platform security
 
-Optional Touch ID, Windows Hello (including PIN) and Ubuntu fingerprint unlock integrate with the existing encrypted Vault, with master-password fallback, CS/DE/EN settings, inactivity locking and optional focus locking. Windows and Linux provide convenience unlock; macOS seals the Vault key to a Touch ID-gated Secure Enclave key. **Locking disconnects SSH sessions and closes plugins.** Native hardware authentication still needs interactive verification. See [setup, dependencies, platform security differences and verification](https://sm.ch-j.eu/en/documentation/security-and-backups/).
+Optional Touch ID, Windows Hello (including PIN) and Ubuntu fingerprint unlock integrate with the existing encrypted Vault, with master-password fallback, localized settings, inactivity locking and optional focus locking. Windows and Linux provide convenience unlock; macOS seals the Vault key to a Touch ID-gated Secure Enclave key. **Locking disconnects SSH sessions and closes plugins.** Native hardware authentication still needs interactive verification. See [setup, dependencies, platform security differences and verification](https://sm.ch-j.eu/en/documentation/security-and-backups/).
 
 On macOS, `EHOSTUNREACH` for local SSH servers may require allowing **CH-J Server Manager** under **System Settings → Privacy & Security → Local Network**, then restarting the app. This build declares the usage reason and explains the error. Ubuntu packages include standard icon sizes and a matching desktop/window identity.
 
 ### Backups and data loss
 
-Create and test appropriate backups of remote data and connection information before risky operations or beta updates. Verify that restoration works. The application does not guarantee that backups exist or are recoverable. Profile export transfers connection metadata only; it is not a backup of the encrypted Vault, saved credentials or remote files.
+Create and test appropriate backups of remote data and connection information before risky operations or alpha and beta updates. Verify that restoration works. The application does not guarantee that backups exist or are recoverable. Profile export transfers connection metadata only; it is not a backup of the encrypted Vault, saved credentials or remote files.
 
 ### License and mandatory acceptance
 
@@ -291,12 +335,12 @@ Two independent applications share the CH-J server-management focus. Each connec
 
 | | CH-J Server Manager | SM Mobile |
 | --- | --- | --- |
-| Environment | Electron desktop application | Flutter / Dart mobile application |
+| Environment | Rust + Tauri 2 desktop application (`0.1.1`); Electron (`0.1.0`) | Flutter / Dart mobile application |
 | Platforms | Windows, macOS and Linux; current package targets are listed above | Android 11+ and iOS/iPadOS 15+; phone and tablet layouts |
-| Server access | Multiple SSH sessions, interactive terminal, SFTP and Monaco remote editing | One active SSH session, PTY terminal and SFTP browsing/transfers; no remote text editor |
+| Server access | Multiple SSH sessions, interactive terminals, SFTP and Monaco remote editing | One active SSH session, PTY terminal and SFTP browsing/transfers; no remote text editor |
 | Administration | Diagnostics, local Hash & Checksum and first-party management tools | Foreground Linux monitoring and IPv4/IPv6 DNS/TCP diagnostics; no desktop plugin system or local hashing tool |
 | Profile exchange | JSON version 1 and desktop CSV | Shared JSON version 1; no CSV |
-| Status | Beta `0.1.0` | Development alpha `0.0.1`; Android packages and unsigned iOS development artifacts on the official website |
+| Status | Beta `0.1.0`; alpha `0.1.1` in preparation | Development alpha `0.0.1`; Android packages and unsigned iOS development artifacts on the official website |
 | Project README | [Desktop on GitHub](https://github.com/ch-j-code/CH-J-Servermanager) | [SM Mobile on GitHub](https://github.com/ch-j-code/SM-Mobile) |
 | Official website | [Desktop](https://sm.ch-j.cz/cs/) | [Mobile](https://sm.ch-j.cz/cs/?edition=mobile) |
 | Source catalog | [Desktop sources](https://sm.ch-j.cz/cs/source/) | [Mobile sources](https://sm.ch-j.cz/cs/source/?edition=mobile) |
@@ -317,35 +361,32 @@ SM Mobile's tablet layout is implemented, while physical iPad validation remains
 
 The desktop source archive contains a complete, self-contained application source tree. It can be copied into an otherwise empty working directory and used for dependency installation, testing, development startup, and supported platform builds without any sibling source projects.
 
-The application communicates with an update service through its public HTTPS contract and supports independently distributed plugin packages through Plugin API 1.7. External services, plugin sources, and release tooling are not runtime, test, or build dependencies. Bundled first-party plugins in `src/main/firstPartyPlugins/` and the internal plugin framework in `src/main/plugins/` are included in this application tree.
+The application consists of a Rust Core (`src-tauri/`), a plain JavaScript user interface (`src/ui/`), a typed API layer (`src/api/`) and first-party modules (`src/modules/`). It communicates with an update service through its public HTTPS contract and supports independently distributed module packages through Module API 1.7. External services, module sources, and release tooling are not runtime, test, or build dependencies.
 
 ### Development from the official sources
 
 Requirements:
 
-- Node.js 24 LTS (24.18 or newer);
-- npm;
-- the native toolchain required by Electron dependencies on the host platform.
+- Rust (stable) and Cargo;
+- Node.js 24 LTS and npm;
+- the [Tauri 2 prerequisites](https://v2.tauri.app/start/prerequisites/) for the host platform: Xcode Command Line Tools on macOS, Visual Studio Build Tools and WebView2 on Windows, WebKitGTK 4.1 development packages on Linux. Verifying a Windows installer also needs 7-Zip.
 
 Use an authorised copy of the supplied application sources and a separate `node_modules` installation on each operating system:
 
 ```bash
 cd /path/to/supplied/app
 npm ci
-npm run native:build
 npm test
-npm start
+npm run dev
 ```
 
-The application sources use one shared `package.json` and one shared `package-lock.json` for all supported platforms. Build on the target operating system with:
+Build on the target operating system with:
 
 ```bash
-npm run build:mac
-npm run build:win
-npm run build:linux
+npm run build
 ```
 
-The configured outputs are a macOS DMG (`arm64`), a Windows NSIS installer (`x64`), and a Debian package (`x64`). The macOS DMG is used for website installation and manual/application updates; it contains the complete application and an Applications shortcut. No internal updater ZIP is required by the custom updater. Generated packages are written to `dist/` within the extracted application tree. The release preparation step synchronises the license and guidance, generates third-party notices and assigns a new build ID.
+The configured outputs are a macOS DMG (`arm64`), a Windows NSIS installer (`x64`), and a Debian package (`x64`), written to `src-tauri/target/release/bundle/`. The sources of the Electron version `0.1.0` remain available in the [source catalog](https://sm.ch-j.eu/en/source/).
 
 ### Topics
 
