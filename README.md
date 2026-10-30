@@ -18,7 +18,7 @@ Version `0.1.0` (Electron).
 
 ### Alpha — newest test version
 
-Alpha `0.1.1` (Rust + Tauri 2) is in preparation. These links always point to the newest package published in the alpha channel; **until alpha `0.1.1` is published, they may not offer a file.**
+Version `0.1.1` (Rust + Tauri 2). These links always point to the newest package published in the alpha channel.
 
 | Platform | Architecture | Package |
 | --- | --- | --- |
@@ -37,11 +37,11 @@ Back up important data before installation or updates, especially before testing
 | Channel | Version | Technology | Status |
 | --- | --- | --- | --- |
 | Beta | `0.1.0` | Electron | Current public release, build `core-20261024T135205Z-7c487d719de2` |
-| Alpha | `0.1.1` | Rust + Tauri 2 | In preparation, not yet published |
+| Alpha | `0.1.1` | Rust + Tauri 2 | Newest test release, build `core-20261030T220507Z-61e4558d889f` |
 
 The project is in **alpha and beta testing**. It is suitable for testing, but some planned features and production distribution requirements are not complete yet. The internal name "Core" refers to the application architecture; the product name remains CH-J Server Manager. Check the [release catalog](https://sm.ch-j.eu/en/releases/) for what is currently published. The features below marked as new belong to `0.1.1` and are not part of the `0.1.0` beta.
 
-The `0.1.0` installers have detached OpenPGP signatures. The release [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS.asc) cover the DMG, EXE and DEB.
+The `0.1.0` installers have detached OpenPGP signatures. The release [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261024T135205Z-7c487d719de2/SHA512SUMS.asc) cover the DMG, EXE and DEB. The `0.1.1` installers are signed the same way: [SHA512SUMS](https://sm.ch-j.eu/files/apps/builds/core-20261030T220507Z-61e4558d889f/SHA512SUMS) and its [signature](https://sm.ch-j.eu/files/apps/builds/core-20261030T220507Z-61e4558d889f/SHA512SUMS.asc).
 
 ## From Electron to Rust and Tauri
 
@@ -340,7 +340,7 @@ Two independent applications share the CH-J server-management focus. Each connec
 | Server access | Multiple SSH sessions, interactive terminals, SFTP and Monaco remote editing | One active SSH session, PTY terminal and SFTP browsing/transfers; no remote text editor |
 | Administration | Diagnostics, local Hash & Checksum and first-party management tools | Foreground Linux monitoring and IPv4/IPv6 DNS/TCP diagnostics; no desktop plugin system or local hashing tool |
 | Profile exchange | JSON version 1 and desktop CSV | Shared JSON version 1; no CSV |
-| Status | Beta `0.1.0`; alpha `0.1.1` in preparation | Development alpha `0.0.1`; Android packages and unsigned iOS development artifacts on the official website |
+| Status | Beta `0.1.0`; alpha `0.1.1` | Development alpha `0.0.1`; Android packages and unsigned iOS development artifacts on the official website |
 | Project README | [Desktop on GitHub](https://github.com/ch-j-code/CH-J-Servermanager) | [SM Mobile on GitHub](https://github.com/ch-j-code/SM-Mobile) |
 | Official website | [Desktop](https://sm.ch-j.cz/cs/) | [Mobile](https://sm.ch-j.cz/cs/?edition=mobile) |
 | Source catalog | [Desktop sources](https://sm.ch-j.cz/cs/source/) | [Mobile sources](https://sm.ch-j.cz/cs/source/?edition=mobile) |
